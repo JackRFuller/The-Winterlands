@@ -6,7 +6,9 @@ public class PlayerView : Entity
 {
     private Animator playerAnimController;
     private BoxCollider playerCollider;
+
     private PlayerInputHandler playerInput;
+    private PlayerInventoryHandler playerInventory;
     private PlayerMovementHandler playerMovement;
 
     public BoxCollider PlayerCollider
@@ -37,8 +39,13 @@ public class PlayerView : Entity
             return playerMovement;
         }
     }
-
-    
+    public PlayerInventoryHandler PlayerInventory
+    {
+        get
+        {
+            return playerInventory;
+        }
+    }
 
     private void Awake()
     {
@@ -47,5 +54,6 @@ public class PlayerView : Entity
 
         playerInput = GetComponent<PlayerInputHandler>();
         playerMovement = GetComponent<PlayerMovementHandler>();
+        playerInventory = GetComponent<PlayerInventoryHandler>();
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CameraView : Entity
 {
-    [SerializeField]
     private Transform playerTransform;
     public Transform PlayerTransform
     {
@@ -12,5 +11,10 @@ public class CameraView : Entity
         {
             return playerTransform;
         }
+    }
+
+    private void Start()
+    {
+        playerTransform = GameManager.Instance.PlayerView.transform;
     }
 }

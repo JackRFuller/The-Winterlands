@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class PlayerMovementHandler : PlayerHandler
 {
-    private Animator animator;
-
     private Vector3 lastRotation;
+
+    private MovementState movementState = MovementState.Free;
+    private enum MovementState
+    {
+        Frozen,
+        Free,
+    }
 
     protected override void Start()
     {
         base.Start();
-
-        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -23,6 +26,9 @@ public class PlayerMovementHandler : PlayerHandler
 
     void Move()
     {
+        if (movementState != MovementState.Free)
+            return;
+
         m_playerView.PlayerAnimController.SetInteger("Speed", (int)(Mathf.Abs(m_playerView.PlayerInput.XInput) + Mathf.Abs(m_playerView.PlayerInput.YInput)));
 
         Vector3 rotation = new Vector3(m_playerView.PlayerInput.XInput, 0, m_playerView.PlayerInput.YInput);
@@ -40,8 +46,27 @@ public class PlayerMovementHandler : PlayerHandler
                 newRotation = Quaternion.LookRotation(lastRotation) * Quaternion.AngleAxis(45, Vector3.up);
         }
 
-        SetRotation(newRotation);
-        
+        SetRotation(newRotation);        
+    }
+
+    public void InteractedWithResource(Resource resource)
+    {
+        movementState = MovementState.Frozen;
+
+        switch(resource.associatedTool)
+        {
+            case Resource.AssociatedTool.Axe:
+                m_playerView.PlayerAnimController.SetTrigger("Chop");
+                break;
+            case Resource.AssociatedTool.Shovel:
+
+                break;
+        }
+    }
+
+    public void UnFreezeMovement()
+    {
+        movementState = MovementState.Free;
     }
 
     

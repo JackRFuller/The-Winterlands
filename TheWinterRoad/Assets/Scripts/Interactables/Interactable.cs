@@ -4,37 +4,32 @@ using UnityEngine;
 
 
 public class Interactable : Entity
-{
-    [SerializeField]
-    private InteractableData interactableData;
-
+{    
     [Header("Icon")]
     [SerializeField]
     private GameObject iconObject;
     [SerializeField]
     private Transform iconTransform;
 
-    private void Start()
+    protected virtual void Start()
     {
-        this.gameObject.tag = "Interactable";
-
         TurnOffIcon();
     }
 
-    private void Update()
-    {
-        IconLookAtCamera();
-    }
-
-    public void PlayerInDistanceToInteract()
+    public virtual void PlayerWithinDistanceToInteract()
     {
         TurnOnIcon();
         IconLookAtCamera();
     }
 
-    public void PlayerOutOfDistanceToInteract()
+    public virtual void PlayerOutOfDistanceToInteract()
     {
         TurnOffIcon();
+    }
+
+    public virtual void Interact()
+    {
+
     }
 
     private void TurnOnIcon()
@@ -49,7 +44,7 @@ public class Interactable : Entity
 
     private void IconLookAtCamera()
     {
-        iconTransform.LookAt(Camera.main.transform);
+        iconTransform.LookAt(2 * transform.position - Camera.main.transform.position);
     }
 
 

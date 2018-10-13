@@ -4,81 +4,80 @@ using UnityEngine;
 
 public class PlayerInteractionHandler : PlayerHandler
 {
-    private Interactable interactable;
+    private ResourceHandler resourceHandler;
+    private Transform interactTransform;
 
-    private Bounds colliderBounds;
-
-    public RayCastOrigins rayCastOrigins;
-
-
+    private Vector3 rayCastOrigin;
 
     protected override void Start()
     {
         base.Start();
-        colliderBounds = m_playerView.PlayerCollider.bounds;
     }
 
 
     // Update is called once per frame
     void Update ()
-    {
-        UpdateRayCastOrigins();
+    {       
         DetectObject();
 	}
 
     void DetectObject()
     {
-        
-        Ray ray = new Ray(rayCastOrigins.bottomLeft, transform.forward);
-        Debug.DrawRay(ray.origin, ray.direction, Color.red, 0.1f);
+        UpdateRaycastOrigin();
 
+        Ray detectionRay = new Ray(rayCastOrigin, transform.forward);
+        Debug.DrawRay(detectionRay.origin, detectionRay.direction, Color.blue, 1);
         RaycastHit hit;
 
-        if(Physics.Raycast(ray, out hit, 1))
+        if(Physics.Raycast(detectionRay, out hit, 1))
         {
-            if(hit.collider.tag == "Interactable")
+            if(hit.collider.tag == "Resource")
             {
-                interactable = hit.collider.GetComponent<Interactable>();
-                interactable.PlayerInDistanceToInteract();
+                //Check if we've already got Resource info
+                if(interactTransform == null || interactTransform != hit.transform)
+                {
+                    interactTransform = hit.transform;
+                    resourceHandler = hit.collider.GetComponent<ResourceHandler>();
+
+                    //Check if we've got associated tool
+                    if (m_playerView.PlayerInventory.CheckPlayerHasTool(resourceHandler.Resource.associatedTool.ToString()))
+                    {                        
+                        m_playerView.PlayerInput.PlayerInteracted.AddListener(InteractWithResource);
+                        resourceHandler.PlayerWithinDistanceToInteract();
+                    }
+                }
             }
             else
             {
-                if(interactable != null)
-                {
-                    interactable.PlayerOutOfDistanceToInteract();
-                    interactable = null;
-                }
+                RemoveInteractable();
             }
         }
         else
         {
-            if (interactable != null)
-            {
-                interactable.PlayerOutOfDistanceToInteract();
-                interactable = null;
-            }
+            RemoveInteractable();
         }
-        
-
-       
     }
 
-    public void UpdateRayCastOrigins()
+    private void InteractWithResource()
     {
-        rayCastOrigins.bottomLeft = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
-        rayCastOrigins.bottomRight = new Vector3(transform.position.x + 0.4f, transform.position.y, transform.position.z);
-        rayCastOrigins.bottomMiddle = transform.position;
-
-        rayCastOrigins.rayCastOriginPositions = new Vector3[] { rayCastOrigins.bottomLeft, rayCastOrigins.bottomRight, rayCastOrigins.bottomMiddle };
+        m_playerView.PlayerMovement.InteractedWithResource(resourceHandler.Resource);
+        Debug.Log("Interacted");
     }
 
-    public struct RayCastOrigins
+    private void RemoveInteractable()
     {
-        public Vector3 topLeft, topRight, topMiddle;
-        public Vector3 middleLeft, middleRight, middleMiddle;
-        public Vector3 bottomLeft, bottomRight, bottomMiddle;
+        if(interactTransform != null)
+        {
+            resourceHandler.PlayerOutOfDistanceToInteract();
 
-        public Vector3[] rayCastOriginPositions;
+            interactTransform = null;
+            resourceHandler = null;
+            m_playerView.PlayerInput.PlayerInteracted.RemoveListener(InteractWithResource);
+        }
     }
 
+    void UpdateRaycastOrigin()
+    {
+        rayCastOrigin = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
+    }
 }

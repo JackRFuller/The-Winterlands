@@ -16,6 +16,8 @@ public class PlayerMovementHandler : PlayerHandler
     protected override void Start()
     {
         base.Start();
+
+        m_playerView.PlayerInput.PlayerToggledInventoryMenu.AddListener(ToggleCrouch);
     }
 
     // Update is called once per frame
@@ -67,6 +69,13 @@ public class PlayerMovementHandler : PlayerHandler
     public void UnFreezeMovement()
     {
         movementState = MovementState.Free;
+    }
+
+    public void ToggleCrouch()
+    {
+        bool crouchingState = m_playerView.PlayerAnimController.GetBool("isCrouching");
+        crouchingState = !crouchingState;
+        m_playerView.PlayerAnimController.SetBool("isCrouching", crouchingState);
     }
 
     

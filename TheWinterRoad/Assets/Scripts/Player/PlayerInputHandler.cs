@@ -10,6 +10,8 @@ public class PlayerInputHandler : PlayerHandler
 
     [HideInInspector]
     public UnityEvent PlayerInteracted;
+    [HideInInspector]
+    public UnityEvent PlayerToggledInventoryMenu;
 
     public float XInput
     {
@@ -25,11 +27,29 @@ public class PlayerInputHandler : PlayerHandler
             return m_YInput;
         }
     }
-    
+
+    private InputState inputState;
+    private enum InputState
+    {
+        Free,
+        Locked,
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        LockCursorAndMouse();
+    }
+
     private void Update()
     {
-        GetMovementInput();
-        GetInteractInput();
+        if(inputState == InputState.Free)
+        {
+            GetMovementInput();
+            GetInteractInput();
+        }
+      
+        GetInventoryInput();
     }
 
     private void GetMovementInput()
@@ -45,5 +65,31 @@ public class PlayerInputHandler : PlayerHandler
             if (PlayerInteracted != null)
                 PlayerInteracted.Invoke();
         }
+    }
+
+    private void GetInventoryInput()
+    {
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (PlayerToggledInventoryMenu != null)
+                PlayerToggledInventoryMenu.Invoke();
+
+            if (inputState == InputState.Free)
+                inputState = InputState.Locked;
+            else
+                inputState = InputState.Free;
+        }
+    }
+
+    public void LockCursorAndMouse()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    public void UnlockCursorAndMouse()
+    {
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
     }
 }

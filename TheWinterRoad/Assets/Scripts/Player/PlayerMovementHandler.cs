@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PlayerMovementHandler : PlayerHandler
 {
+    private const float playerSneakSpeed = 0.5f;
+    private const float playerWalkSpeed = 1.0f;
+    private const float playerSprintSpeed = 2.0f;
+
     private Vector3 lastRotation;
 
     private MovementState movementState = MovementState.Free;
@@ -17,7 +21,8 @@ public class PlayerMovementHandler : PlayerHandler
     {
         base.Start();
 
-        m_playerView.PlayerInput.PlayerToggledInventoryMenu.AddListener(ToggleCrouch);
+        m_playerView.PlayerInput.PlayerToggledInventoryMenu.AddListener(TogglePlayerIntoAndFromCrouchPosition);
+        m_playerView.PlayerInput.PlayerToggledInventoryMenu.AddListener(ToggleMovementState);
     }
 
     // Update is called once per frame
@@ -31,7 +36,8 @@ public class PlayerMovementHandler : PlayerHandler
         if (movementState != MovementState.Free)
             return;
 
-        m_playerView.PlayerAnimController.SetInteger("Speed", (int)(Mathf.Abs(m_playerView.PlayerInput.XInput) + Mathf.Abs(m_playerView.PlayerInput.YInput)));
+        m_playerView.PlayerAnimController.SetBool("isCrouching", m_playerView.PlayerInput.IsCrouching);
+        m_playerView.PlayerAnimController.SetFloat("Movement Speed", ReturnPlayerMovementSpeed());
 
         Vector3 rotation = new Vector3(m_playerView.PlayerInput.XInput, 0, m_playerView.PlayerInput.YInput);
 
@@ -48,22 +54,25 @@ public class PlayerMovementHandler : PlayerHandler
                 newRotation = Quaternion.LookRotation(lastRotation) * Quaternion.AngleAxis(45, Vector3.up);
         }
 
+        Debug.Log("now");
+
         SetRotation(newRotation);        
     }
 
     public void InteractedWithResource(Resource resource)
     {
         movementState = MovementState.Frozen;
+        m_playerView.PlayerAnimController.SetTrigger("Action");
 
-        switch(resource.associatedTool)
-        {
-            case Resource.AssociatedTool.Axe:
-                m_playerView.PlayerAnimController.SetTrigger("Chop");
-                break;
-            case Resource.AssociatedTool.Shovel:
+        //switch (resource.associatedTool)
+        //{
+        //    case Resource.AssociatedTool.Axe:
+        //        m_playerView.PlayerAnimController.SetTrigger("Chop");
+        //        break;
+        //    case Resource.AssociatedTool.Shovel:
 
-                break;
-        }
+        //        break;
+        //}
     }
 
     public void UnFreezeMovement()
@@ -71,11 +80,56 @@ public class PlayerMovementHandler : PlayerHandler
         movementState = MovementState.Free;
     }
 
-    public void ToggleCrouch()
+    /// <summary>
+    /// Used when opening inventory
+    /// </summary>
+    ///
+    private void TogglePlayerIntoAndFromCrouchPosition()
     {
         bool crouchingState = m_playerView.PlayerAnimController.GetBool("isCrouching");
-        crouchingState = !crouchingState;
+
+        if(movementState == MovementState.Free)
+        {
+            if (!crouchingState)
+                crouchingState = true;
+        }
+        else
+        {
+            crouchingState = false;
+        }
+      
+        m_playerView.PlayerAnimController.SetFloat("Movement Speed", 0);
         m_playerView.PlayerAnimController.SetBool("isCrouching", crouchingState);
+    }
+
+    private void ToggleMovementState()
+    {
+        if (movementState == MovementState.Frozen)
+            movementState = MovementState.Free;
+        else
+            movementState = MovementState.Frozen;
+    }
+
+    private float ReturnPlayerMovementSpeed()
+    {
+        float playerInput = Mathf.Abs(m_playerView.PlayerInput.XInput) + Mathf.Abs(m_playerView.PlayerInput.YInput);
+
+        if(playerInput > 0)
+        {
+            if(m_playerView.PlayerInput.IsRunning)
+            {
+                return playerSprintSpeed;
+            }
+            else
+            {
+                return playerWalkSpeed;
+            }
+        }
+        else
+        {
+            return 0;
+        }
+
     }
 
     

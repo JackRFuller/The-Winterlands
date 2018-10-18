@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChopAnimation : StateMachineBehaviour
+public class ActionAnimation : StateMachineBehaviour
 {
     private PlayerView playerView;
 
@@ -13,7 +13,7 @@ public class ChopAnimation : StateMachineBehaviour
 
         playerView.PlayerMovement.UnFreezeMovement();
 
-        animator.ResetTrigger("Chop");
+        animator.ResetTrigger("Action");
 
     }
 }

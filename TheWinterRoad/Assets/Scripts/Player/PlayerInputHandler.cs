@@ -7,6 +7,8 @@ public class PlayerInputHandler : PlayerHandler
 {
     private float m_XInput;
     private float m_YInput;
+    private bool isCrouching;
+    private bool isRunning;
 
     [HideInInspector]
     public UnityEvent PlayerInteracted;
@@ -27,8 +29,22 @@ public class PlayerInputHandler : PlayerHandler
             return m_YInput;
         }
     }
+    public bool IsCrouching
+    {
+        get
+        {
+            return isCrouching;
+        }        
+    }
+    public bool IsRunning
+    {
+        get
+        {
+            return isRunning;
+        }       
+    }
 
-    private InputState inputState;
+    private InputState inputState = InputState.Free;
     private enum InputState
     {
         Free,
@@ -47,6 +63,8 @@ public class PlayerInputHandler : PlayerHandler
         {
             GetMovementInput();
             GetInteractInput();
+            GetCrouchInput();
+            GetSprintingInput();
         }
       
         GetInventoryInput();
@@ -56,6 +74,26 @@ public class PlayerInputHandler : PlayerHandler
     {
         m_XInput = Input.GetAxisRaw("Horizontal");
         m_YInput = Input.GetAxisRaw("Vertical");
+    }
+
+    private void GetCrouchInput()
+    {
+        if(Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            isCrouching = !isCrouching;
+        }
+    }
+
+    private void GetSprintingInput()
+    {
+        if(Input.GetKey(KeyCode.LeftShift))
+        {
+            isRunning = true;
+        }
+        else
+        {
+            isRunning = false;
+        }
     }
 
     private void GetInteractInput()
@@ -71,13 +109,13 @@ public class PlayerInputHandler : PlayerHandler
     {
         if(Input.GetKeyDown(KeyCode.Tab))
         {
-            if (PlayerToggledInventoryMenu != null)
-                PlayerToggledInventoryMenu.Invoke();
-
             if (inputState == InputState.Free)
                 inputState = InputState.Locked;
             else
                 inputState = InputState.Free;
+
+            if (PlayerToggledInventoryMenu != null)
+                PlayerToggledInventoryMenu.Invoke();
         }
     }
 

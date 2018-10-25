@@ -11,7 +11,11 @@ public class GameManager : MonoBehaviour
         {
             return instance;
         }
-    }    
+    }
+
+    //Managers
+    private TimeManager timeManager;
+
 
     [SerializeField]
     private PlayerView playerView;
@@ -32,7 +36,13 @@ public class GameManager : MonoBehaviour
             return cameraView;
         }
     }
-
+    public TimeManager TimeManager
+    {
+        get
+        {
+            return timeManager;
+        }
+    }
 
     private void Awake()
     {
@@ -44,5 +54,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        timeManager = GetComponent<TimeManager>();
     }
 }

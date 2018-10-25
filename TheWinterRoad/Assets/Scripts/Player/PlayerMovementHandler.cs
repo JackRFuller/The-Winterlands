@@ -54,7 +54,7 @@ public class PlayerMovementHandler : PlayerHandler
                 newRotation = Quaternion.LookRotation(lastRotation) * Quaternion.AngleAxis(45, Vector3.up);
         }
 
-        Debug.Log("now");
+
 
         SetRotation(newRotation);        
     }

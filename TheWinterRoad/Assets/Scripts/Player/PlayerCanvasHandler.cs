@@ -5,20 +5,18 @@ using UnityEngine;
 public class PlayerCanvasHandler : PlayerHandler
 {
     [SerializeField]
-    private UIPlayerBackpackUIHandler backpackUIHandler;
-    [SerializeField]
-    private UIPlayerToolbeltHandler toolBeltUIHandler;
-
+    private UIInventoryHandler inventoryUIHandler;
+  
 	// Use this for initialization
 	protected override void Start ()
     {
         base.Start();
         m_playerView.PlayerInput.PlayerToggledInventoryMenu.AddListener(ToggleInventory);
+        inventoryUIHandler.SetupInventory(m_playerView);
     }
 
     private void ToggleInventory()
     {
-        backpackUIHandler.ToggleInventory();
-        toolBeltUIHandler.ToggleInventory();
+        inventoryUIHandler.ToggleInventory();       
     }
 }

@@ -59,20 +59,11 @@ public class PlayerMovementHandler : PlayerHandler
         SetRotation(newRotation);        
     }
 
-    public void InteractedWithResource(Resource resource)
+    public void InteractedWithResource(InteractableItem _interactableItem)
     {
         movementState = MovementState.Frozen;
-        m_playerView.PlayerAnimController.SetTrigger("Action");
-
-        //switch (resource.associatedTool)
-        //{
-        //    case Resource.AssociatedTool.Axe:
-        //        m_playerView.PlayerAnimController.SetTrigger("Chop");
-        //        break;
-        //    case Resource.AssociatedTool.Shovel:
-
-        //        break;
-        //}
+        m_playerView.PlayerAnimController.SetFloat("ActionIndex", (float)_interactableItem.interactionAnimationIndex);
+        m_playerView.PlayerAnimController.SetTrigger("Action");      
     }
 
     public void UnFreezeMovement()

@@ -9,6 +9,7 @@ public class Resource : ScriptableObject
 
     public enum AssociatedTool
     {
+        Hands,
         Axe,
         Shovel,
     }

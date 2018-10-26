@@ -1,50 +1,52 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 public class Interactable : Entity
-{    
-    [Header("Icon")]
+{
     [SerializeField]
-    private GameObject iconObject;
-    [SerializeField]
-    private Transform iconTransform;
+    protected InteractableItem interactable;
+    private UIInteractHandler uiInteractHandler;
+
+    public InteractableItem InteractableItem
+    {
+        get
+        {
+            return interactable;
+        }
+    }
+
+    public event Action<bool> PlayerWithinDistance;
+    public event Action PlayerOutOfDistance;
 
     protected virtual void Start()
     {
-        TurnOffIcon();
+        this.gameObject.tag = "Interactable";
+        uiInteractHandler = GetComponentInChildren<UIInteractHandler>();
+        uiInteractHandler.SetupInteractUI(this, interactable.requiredItem.itemIcon, interactable.hasProgressBar);
     }
 
-    public virtual void PlayerWithinDistanceToInteract()
+    public void PlayerWithinDistanceToInteract(bool canInteract)
     {
-        TurnOnIcon();
-        IconLookAtCamera();
+        if(PlayerWithinDistance != null)
+        {
+            PlayerWithinDistance(canInteract);
+        }
     }
 
-    public virtual void PlayerOutOfDistanceToInteract()
+    public void PlayerOutOfDistanceToInteract()
     {
-        TurnOffIcon();
+        if (PlayerOutOfDistance != null)
+        {
+            PlayerOutOfDistance();
+        }
     }
 
-    public virtual void Interact()
+    public virtual void Interact(PlayerView playerView)
     {
 
-    }
-
-    private void TurnOnIcon()
-    {
-        iconObject.SetActive(true);
-    }
-
-    private void TurnOffIcon()
-    {
-        iconObject.SetActive(false);
-    }
-
-    private void IconLookAtCamera()
-    {
-        iconTransform.LookAt(2 * transform.position - Camera.main.transform.position);
     }
 
 

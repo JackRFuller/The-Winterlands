@@ -8,7 +8,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c77a8db65020f9f4d9734cd0e6318df0, type: 3}
+  m_Script: {fileID: 11500000, guid: 2c5622691f947c04098c230522790bc6, type: 3}
   m_Name: Axe
   m_EditorClassIdentifier: 
-  toolName: Axe
+  itemName: Axe
+  itemIcon: {fileID: 21300000, guid: 3320138d65083b242881200cd2236f6a, type: 3}

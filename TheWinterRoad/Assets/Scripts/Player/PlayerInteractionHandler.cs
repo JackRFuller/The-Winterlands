@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerInteractionHandler : PlayerHandler
 {
-    private ResourceHandler resourceHandler;
+    private Interactable interactable;
     private Transform interactTransform;
 
     private Vector3 rayCastOrigin;
@@ -31,20 +31,13 @@ public class PlayerInteractionHandler : PlayerHandler
 
         if(Physics.Raycast(detectionRay, out hit, 1))
         {
-            if(hit.collider.tag == "Resource")
+            if(hit.collider.tag == "Interactable")
             {
                 //Check if we've already got Resource info
                 if(interactTransform == null || interactTransform != hit.transform)
                 {
-                    interactTransform = hit.transform;
-                    resourceHandler = hit.collider.GetComponent<ResourceHandler>();
-
-                    //Check if we've got associated tool
-                    if (m_playerView.PlayerInventory.CheckPlayerHasTool(resourceHandler.Resource.associatedTool.ToString()))
-                    {                        
-                        m_playerView.PlayerInput.PlayerInteracted.AddListener(InteractWithResource);
-                        resourceHandler.PlayerWithinDistanceToInteract();
-                    }
+                    FoundInteractable(hit.transform);
+                    Debug.Log("Found");
                 }
             }
             else
@@ -58,20 +51,62 @@ public class PlayerInteractionHandler : PlayerHandler
         }
     }
 
+    private void FoundInteractable(Transform _interactableTransform)
+    {
+        interactTransform = _interactableTransform;
+        interactable = interactTransform.GetComponent<Interactable>();
+
+        //Check if we've got associated tool
+        InventoryItem requiredItem = interactable.InteractableItem.requiredItem;
+
+        if(requiredItem.itemName != "Grab")
+        {
+            if(m_playerView.PlayerInventory.CheckPlayerHasItem(requiredItem.itemName,interactable.InteractableItem.quantityOfRequiredItem))
+            {
+                EnableInteractable();
+            }
+            else
+            {
+                DisableInteractable();
+            }
+        }
+        else
+        {
+            EnableInteractable();
+        }
+    }
+
+    private void EnableInteractable()
+    {
+        m_playerView.PlayerInput.PlayerInteracted.AddListener(InteractWithResource);
+        interactable.PlayerWithinDistanceToInteract(true);
+    }
+
+    private void DisableInteractable()
+    {
+        interactable.PlayerWithinDistanceToInteract(false);
+    }
+
     private void InteractWithResource()
     {
-        m_playerView.PlayerMovement.InteractedWithResource(resourceHandler.Resource);
-        Debug.Log("Interacted");
+        m_playerView.PlayerMovement.InteractedWithResource(interactable.InteractableItem);
+    }
+
+    /// <summary>
+    /// Triggered from Animation Event
+    /// </summary>
+    public void Interact()
+    {
+        interactable.Interact(m_playerView);
     }
 
     private void RemoveInteractable()
     {
         if(interactTransform != null)
         {
-            resourceHandler.PlayerOutOfDistanceToInteract();
+            interactable.PlayerOutOfDistanceToInteract();
 
             interactTransform = null;
-            resourceHandler = null;
             m_playerView.PlayerInput.PlayerInteracted.RemoveListener(InteractWithResource);
         }
     }

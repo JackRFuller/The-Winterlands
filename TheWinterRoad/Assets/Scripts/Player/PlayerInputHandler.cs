@@ -110,9 +110,16 @@ public class PlayerInputHandler : PlayerHandler
         if(Input.GetKeyDown(KeyCode.Tab))
         {
             if (inputState == InputState.Free)
+            {
                 inputState = InputState.Locked;
+                UnlockCursorAndMouse();
+            }               
             else
+            {
                 inputState = InputState.Free;
+                LockCursorAndMouse();
+            }
+               
 
             if (PlayerToggledInventoryMenu != null)
                 PlayerToggledInventoryMenu.Invoke();
@@ -127,7 +134,7 @@ public class PlayerInputHandler : PlayerHandler
 
     public void UnlockCursorAndMouse()
     {
-        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 }

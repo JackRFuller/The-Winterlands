@@ -44,8 +44,6 @@ public class TimeManager : MonoBehaviour
         int hours = (int)(worldTime / 3600) % 24;
 
         formattedWorldTime = string.Format("{0:00}:{1:00}", hours, minutes);
-
-        Debug.Log(formattedWorldTime);
     }
 
     private void TriggerTimeOfDayEvent()

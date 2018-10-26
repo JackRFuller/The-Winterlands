@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIInventoryHandler : Entity
 {
@@ -13,11 +14,32 @@ public class UIInventoryHandler : Entity
         Visible,
     }
 
+    [Header("UI Components")]
+    [SerializeField]
+    private Image[] inventoryItemIconImages;
+    [SerializeField]
+    private UIInventoryButtonHandler[] inventoryButtonHandlers;
+
     private void Start()
     {
         inventoryAnimController = GetComponent<Animator>();
         inventoryState = InventoryState.Hidden;
     }
+
+    public void SetupInventory(PlayerView playerView)
+    {
+        playerView.PlayerInventory.ItemAddedToInventory += AddItemToInventoryUI;
+    }
+
+    private void AddItemToInventoryUI(InventoryItem item, int inventoryIndex)
+    {
+        int index = inventoryIndex - 1;
+
+        inventoryItemIconImages[index].sprite = item.itemIcon;
+        inventoryItemIconImages[index].enabled = true;
+    }
+
+    #region InventoryShowingAndHidingInUI
 
     public virtual void ToggleInventory()
     {
@@ -51,4 +73,6 @@ public class UIInventoryHandler : Entity
         inventoryState = InventoryState.Hidden;
         inventoryAnimController.SetBool("ShowInventory", false);
     }
+
+    #endregion
 }

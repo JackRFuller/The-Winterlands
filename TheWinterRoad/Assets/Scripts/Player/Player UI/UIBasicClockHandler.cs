@@ -26,8 +26,6 @@ public class UIBasicClockHandler : Entity
 
     private void TriggerNewTimeOfDay()
     {
-        Debug.Log("New Time of Day");
-
         lerpingAttributes.lerpStartPosition = clockFaceTransform.eulerAngles;
         lerpingAttributes.lerpTargetPosition = new Vector3(lerpingAttributes.lerpStartPosition.x,
                                                            lerpingAttributes.lerpStartPosition.y,

@@ -11,9 +11,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d883babc1b9dbca4fbaf4d265a00af01, type: 3}
   m_Name: Tree_Interactable
   m_EditorClassIdentifier: 
+  interactType: 1
+  numberOfNeededInteracts: 3
   requiredItem: {fileID: 11400000, guid: 55ec2a4ca763ef8429776b78d76f56a1, type: 2}
   quantityOfRequiredItem: 1
-  hasProgressBar: 0
   inventoryItems:
   - {fileID: 11400000, guid: 55ec2a4ca763ef8429776b78d76f56a1, type: 2}
   interactionAnimationIndex: 1
+  harvestableItems:
+  - inventoryItem: {fileID: 11400000, guid: ee75cdc6fd62974469ae410da55aad2d, type: 2}
+    spawnRates:
+    - 100
+    - 70
+    - 25

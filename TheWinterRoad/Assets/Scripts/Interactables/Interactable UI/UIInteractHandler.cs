@@ -17,20 +17,35 @@ public class UIInteractHandler : MonoBehaviour
     [SerializeField]
     private GameObject progressBarObject;
 
-    public void SetupInteractUI(Interactable _interactable, Sprite _interactIcon, bool _hasProgressBar)
+    [Header("Progress Bar Components")]
+    [SerializeField]
+    private Image progressBarImage;
+    private float progressMax;
+
+    public void SetupInteractUI(Interactable _interactable)
     {
         interactable = _interactable;
-        interactIconImage.sprite = _interactIcon;
+        interactIconImage.sprite = interactable.InteractableItem.requiredItem.itemIcon;
 
-        if(!_hasProgressBar)
+        if(interactable.InteractableItem.interactType == InteractableItem.InteractableItemType.ItemPickup)
         {
             DisableProgressBar();
-        }      
+        } 
+        else
+        {
+            progressMax = interactable.InteractableItem.numberOfNeededInteracts;
+        }
 
         interactable.PlayerWithinDistance += ShowInteractUI;
         interactable.PlayerOutOfDistance += HideInteractUI;
 
         HideInteractUI();
+    }
+
+    public void SetInteractableProgress(float progress)
+    {
+        float progressPercent = progress / progressMax;
+        progressBarImage.fillAmount = progressPercent;
     }
 
     private void ShowInteractUI(bool _canInteract)

@@ -4,10 +4,20 @@ using UnityEngine;
 
 public class PlayerInteractionHandler : PlayerHandler
 {
+    [SerializeField]
+    private Transform playerCenterTransform;
+
     private Interactable interactable;
     private Transform interactTransform;
 
     private Vector3 rayCastOrigin;
+    public Transform PlayerCenterTransform
+    {
+        get
+        {
+            return playerCenterTransform;
+        }
+    }
 
     protected override void Start()
     {

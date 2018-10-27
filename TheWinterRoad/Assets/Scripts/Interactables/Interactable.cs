@@ -8,7 +8,7 @@ public class Interactable : Entity
 {
     [SerializeField]
     protected InteractableItem interactable;
-    private UIInteractHandler uiInteractHandler;
+    protected UIInteractHandler uiInteractHandler;
 
     public InteractableItem InteractableItem
     {
@@ -21,11 +21,14 @@ public class Interactable : Entity
     public event Action<bool> PlayerWithinDistance;
     public event Action PlayerOutOfDistance;
 
+    //Used if Interactable is Harvestable
+    protected float interactProgress;
+
     protected virtual void Start()
     {
         this.gameObject.tag = "Interactable";
         uiInteractHandler = GetComponentInChildren<UIInteractHandler>();
-        uiInteractHandler.SetupInteractUI(this, interactable.requiredItem.itemIcon, interactable.hasProgressBar);
+        uiInteractHandler.SetupInteractUI(this);
     }
 
     public void PlayerWithinDistanceToInteract(bool canInteract)
@@ -45,6 +48,11 @@ public class Interactable : Entity
     }
 
     public virtual void Interact(PlayerView playerView)
+    {
+
+    }
+
+    protected virtual void SpawnItem()
     {
 
     }

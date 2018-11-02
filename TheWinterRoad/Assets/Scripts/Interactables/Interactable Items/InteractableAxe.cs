@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class InteractableAxe : Interactable
 {
-    public override void Interact(PlayerView _playerView)
+    public override void InteractOne()
     {
-        _playerView.PlayerInventory.AddItemToInventory(interactable.inventoryItems[0]);
+        playerView.PlayerInventory.AddItemToInventory(interactableData.interacts[interactIndex].awardedInventoryItems[0].awardedInventoryItem);
         this.gameObject.SetActive(false);
     }
 }

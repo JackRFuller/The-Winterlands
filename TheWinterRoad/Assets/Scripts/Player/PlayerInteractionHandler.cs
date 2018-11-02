@@ -19,6 +19,9 @@ public class PlayerInteractionHandler : PlayerHandler
         }
     }
 
+    private int maxInteractsAvailable;
+    private int currentInteractIndex;
+
     protected override void Start()
     {
         base.Start();
@@ -47,7 +50,6 @@ public class PlayerInteractionHandler : PlayerHandler
                 if(interactTransform == null || interactTransform != hit.transform)
                 {
                     FoundInteractable(hit.transform);
-                    Debug.Log("Found");
                 }
             }
             else
@@ -66,40 +68,51 @@ public class PlayerInteractionHandler : PlayerHandler
         interactTransform = _interactableTransform;
         interactable = interactTransform.GetComponent<Interactable>();
 
-        //Check if we've got associated tool
-        InventoryItem requiredItem = interactable.InteractableItem.requiredItem;
+        //Get Possible Interactions
+        Interact[] interacts = interactable.InteractableItem.interacts;
 
-        if(requiredItem.itemName != "Grab")
+        //Enable UI
+        m_playerView.PlayerUIHandler.InteractActionsHandler.ShowInteractActions(m_playerView,interacts);
+
+        for (int interactIndex = 0; interactIndex < interacts.Length; interactIndex++)
         {
-            if(m_playerView.PlayerInventory.CheckPlayerHasItem(requiredItem.itemName,interactable.InteractableItem.quantityOfRequiredItem))
+            //Check if we have required items and the correct quantity
+            InventoryItemData item = interacts[interactIndex].requiredInventoryItem.requiredInventoryItem;
+            int numberRequired = interacts[interactIndex].requiredInventoryItem.quanityOfRequiredInventoryItem;
+
+            if (item.itemName != "Grab")
             {
-                EnableInteractable();
+                if (m_playerView.PlayerInventory.CheckPlayerHasItem(item.itemName, numberRequired))
+                {
+                    EnableInteractable(interactIndex);
+                }                
             }
             else
             {
-                DisableInteractable();
+                EnableInteractable(interactIndex);                
             }
         }
-        else
+     
+    }
+
+    private void EnableInteractable(int interactIndex)
+    {
+        maxInteractsAvailable++;
+         m_playerView.PlayerInput.PlayerInteract += InteractWithResource;
+    }
+
+    /// <summary>
+    /// Called from Player Input
+    /// </summary>
+    /// <param name="interactIndex"></param>
+    private void InteractWithResource(int interactIndex)
+    {
+        //Check interact is within range
+        if(interactIndex <= maxInteractsAvailable)
         {
-            EnableInteractable();
+            currentInteractIndex = interactIndex;
+            m_playerView.PlayerMovement.InteractedWithResource(currentInteractIndex, interactable.InteractableItem);
         }
-    }
-
-    private void EnableInteractable()
-    {
-        m_playerView.PlayerInput.PlayerInteracted.AddListener(InteractWithResource);
-        interactable.PlayerWithinDistanceToInteract(true);
-    }
-
-    private void DisableInteractable()
-    {
-        interactable.PlayerWithinDistanceToInteract(false);
-    }
-
-    private void InteractWithResource()
-    {
-        m_playerView.PlayerMovement.InteractedWithResource(interactable.InteractableItem);
     }
 
     /// <summary>
@@ -107,17 +120,17 @@ public class PlayerInteractionHandler : PlayerHandler
     /// </summary>
     public void Interact()
     {
-        interactable.Interact(m_playerView);
+        interactable.Interact(currentInteractIndex,m_playerView);
     }
 
     private void RemoveInteractable()
     {
         if(interactTransform != null)
         {
-            interactable.PlayerOutOfDistanceToInteract();
-
             interactTransform = null;
-            m_playerView.PlayerInput.PlayerInteracted.RemoveListener(InteractWithResource);
+            maxInteractsAvailable = 0;
+            m_playerView.PlayerInput.PlayerInteract -= InteractWithResource;
+            m_playerView.PlayerUIHandler.InteractActionsHandler.HideInteractActions();
         }
     }
 

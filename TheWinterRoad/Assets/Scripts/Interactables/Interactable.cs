@@ -7,19 +7,17 @@ using UnityEngine;
 public class Interactable : Entity
 {
     [SerializeField]
-    protected InteractableItem interactable;
-    protected UIInteractHandler uiInteractHandler;
-
-    public InteractableItem InteractableItem
+    protected InteractableItemData interactableData;    
+    public InteractableItemData InteractableItem
     {
         get
         {
-            return interactable;
+            return interactableData;
         }
     }
 
-    public event Action<bool> PlayerWithinDistance;
-    public event Action PlayerOutOfDistance;
+    protected PlayerView playerView;
+    protected int interactIndex;
 
     //Used if Interactable is Harvestable
     protected float interactProgress;
@@ -27,27 +25,39 @@ public class Interactable : Entity
     protected virtual void Start()
     {
         this.gameObject.tag = "Interactable";
-        uiInteractHandler = GetComponentInChildren<UIInteractHandler>();
-        uiInteractHandler.SetupInteractUI(this);
     }
 
-    public void PlayerWithinDistanceToInteract(bool canInteract)
+    public virtual void Interact(int _interactIndex, PlayerView _playerView)
     {
-        if(PlayerWithinDistance != null)
+        playerView = _playerView;
+        interactIndex = _interactIndex;
+
+        switch (interactIndex)
         {
-            PlayerWithinDistance(canInteract);
+            case 0:
+                InteractOne();
+                break;
+            case 1:
+                InteractTwo();
+                break;
+            case 2:
+                InteractThree();
+                break;
         }
+
     }
 
-    public void PlayerOutOfDistanceToInteract()
+    public virtual void InteractOne()
     {
-        if (PlayerOutOfDistance != null)
-        {
-            PlayerOutOfDistance();
-        }
+
     }
 
-    public virtual void Interact(PlayerView playerView)
+    public virtual void InteractTwo()
+    {
+
+    }
+
+    public virtual void InteractThree()
     {
 
     }

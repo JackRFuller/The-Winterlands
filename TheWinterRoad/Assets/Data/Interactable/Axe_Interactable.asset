@@ -11,9 +11,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d883babc1b9dbca4fbaf4d265a00af01, type: 3}
   m_Name: Axe_Interactable
   m_EditorClassIdentifier: 
-  requiredItem: {fileID: 11400000, guid: 2e3ae9696dd138243a12c38cf069a8eb, type: 2}
-  quantityOfRequiredItem: 1
-  hasProgressBar: 0
-  inventoryItems:
-  - {fileID: 11400000, guid: 55ec2a4ca763ef8429776b78d76f56a1, type: 2}
-  interactionAnimationIndex: 0
+  interacts:
+  - requiredInventoryItem:
+      requiredInventoryItem: {fileID: 11400000, guid: 2e3ae9696dd138243a12c38cf069a8eb,
+        type: 2}
+      quanityOfRequiredInventoryItem: 0
+    numberofRequiredInteracts: 1
+    interactionAnimationIndex: 0
+    awardedInventoryItems:
+    - awardedInventoryItem: {fileID: 11400000, guid: 55ec2a4ca763ef8429776b78d76f56a1,
+        type: 2}
+      spawnRates: []

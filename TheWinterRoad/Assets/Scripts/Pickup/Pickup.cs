@@ -5,7 +5,7 @@ using UnityEngine;
 public class Pickup : Entity
 {
     [SerializeField]
-    private InventoryItem item;
+    private InventoryItemData item;
 
     private Collider[] colliders;
 

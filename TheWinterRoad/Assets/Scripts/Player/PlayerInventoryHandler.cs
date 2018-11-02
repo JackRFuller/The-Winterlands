@@ -6,9 +6,9 @@ using System;
 public class PlayerInventoryHandler : PlayerHandler
 {
     [SerializeField]
-    private List<InventoryItem> inventory;
+    private List<InventoryItemData> inventory;
 
-    public List<InventoryItem> Inventory
+    public List<InventoryItemData> Inventory
     {
         get
         {
@@ -16,7 +16,7 @@ public class PlayerInventoryHandler : PlayerHandler
         }       
     }
 
-    public event Action<InventoryItem,int> ItemAddedToInventory;
+    public event Action<InventoryItemData, int> ItemAddedToInventory;
 
     public bool CheckPlayerHasItem(string _itemName, int _numberRequired)
     {
@@ -37,7 +37,7 @@ public class PlayerInventoryHandler : PlayerHandler
         return false;
     }
 
-    public void AddItemToInventory(InventoryItem item)
+    public void AddItemToInventory(InventoryItemData item)
     {
         Inventory.Add(item);
         Debug.Log("Added " + item);

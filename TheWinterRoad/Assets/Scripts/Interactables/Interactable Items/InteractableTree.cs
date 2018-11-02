@@ -7,12 +7,10 @@ public class InteractableTree : Interactable
     [SerializeField]
     private Transform itemSpawnPoint;
 
-    public override void Interact(PlayerView playerView)
+    public override void InteractOne()
     {
         interactProgress++;
-        uiInteractHandler.SetInteractableProgress(interactProgress);
-
-        if(interactProgress == interactable.numberOfNeededInteracts)
+        if (interactProgress == interactableData.interacts[interactIndex].numberofRequiredInteracts)
         {
             SpawnItem();
         }
@@ -20,14 +18,14 @@ public class InteractableTree : Interactable
 
     protected override void SpawnItem()
     {
-        for (int harvestableItemIndex = 0; harvestableItemIndex < interactable.harvestableItems.Length; harvestableItemIndex++)
+        for (int inventoryItemIndex = 0; inventoryItemIndex < interactableData.interacts[interactIndex].awardedInventoryItems.Length; inventoryItemIndex++)
         {
-            for (int spawnRateIndex = 0; spawnRateIndex < interactable.harvestableItems[harvestableItemIndex].spawnRates.Length; spawnRateIndex++)
+            for (int spawnRateIndex = 0; spawnRateIndex < interactableData.interacts[0].awardedInventoryItems[inventoryItemIndex].spawnRates.Length; spawnRateIndex++)
             {
                 float chanceOfDrop = Random.Range(0, 100);
-                if(chanceOfDrop < interactable.harvestableItems[harvestableItemIndex].spawnRates[spawnRateIndex])
+                if (chanceOfDrop < interactableData.interacts[0].awardedInventoryItems[inventoryItemIndex].spawnRates[spawnRateIndex])
                 {
-                    Instantiate(interactable.harvestableItems[harvestableItemIndex].inventoryItem.itemPrefab, itemSpawnPoint.position, itemSpawnPoint.rotation);
+                    Instantiate(interactableData.interacts[0].awardedInventoryItems[inventoryItemIndex].awardedInventoryItem.itemPrefab, itemSpawnPoint.position, itemSpawnPoint.rotation);
                 }
             }
         }

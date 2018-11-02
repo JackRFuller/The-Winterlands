@@ -1,21 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class UIBasicClockHandler : Entity
 {
+    private TimeManager timeManager;
+
     public Vec3Lerping lerpingAttributes;
 
     [SerializeField]
     private Transform clockFaceTransform;
+    [SerializeField]
+    private TMP_Text dayOfWeekText;
 
     private void Start()
     {
-        GameManager.Instance.TimeManager.Midday += TriggerNewTimeOfDay;
-        GameManager.Instance.TimeManager.Dusk += TriggerNewTimeOfDay;
-        GameManager.Instance.TimeManager.Dawn += TriggerNewTimeOfDay;
-        GameManager.Instance.TimeManager.Midnight += TriggerNewTimeOfDay;
+        timeManager = GameManager.Instance.TimeManager;
+        timeManager.NewDayPeriod += TriggerNewTimeOfDay;
+        timeManager.NewDay += TriggerNewDay;
 
+        dayOfWeekText.text = timeManager.DayOfWeek.ToString();
+        
         this.enabled = false;
     }
 
@@ -54,5 +60,10 @@ public class UIBasicClockHandler : Entity
             }
 
         }
+    }
+
+    private void TriggerNewDay()
+    {
+        dayOfWeekText.text = timeManager.DayOfWeek.ToString();
     }
 }

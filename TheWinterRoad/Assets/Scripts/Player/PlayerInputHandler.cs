@@ -9,11 +9,11 @@ public class PlayerInputHandler : PlayerHandler
     private float m_YInput;
     private bool isCrouching;
     private bool isRunning;
-
-    [HideInInspector]
-    public UnityEvent PlayerInteracted;
+    
     [HideInInspector]
     public UnityEvent PlayerToggledInventoryMenu;
+
+    public event UnityAction<int> PlayerInteract;   
 
     public float XInput
     {
@@ -100,8 +100,17 @@ public class PlayerInputHandler : PlayerHandler
     {
         if(Input.GetMouseButtonDown(0))
         {
-            if (PlayerInteracted != null)
-                PlayerInteracted.Invoke();
+            PlayerInteract(0);
+        }
+
+        if(Input.GetMouseButtonDown(1))
+        {
+            PlayerInteract(1);
+        }
+
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            PlayerInteract(2);
         }
     }
 

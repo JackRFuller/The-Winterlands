@@ -14,7 +14,7 @@ public class TimeManager : MonoBehaviour
         get
         {
             return worldTime;
-        }       
+        }
     }
     public string FormattedWorldTime
     {
@@ -25,10 +25,30 @@ public class TimeManager : MonoBehaviour
     }
 
     //Events
-    public event Action Midday;
-    public event Action Midnight;
-    public event Action Dawn;
-    public event Action Dusk;
+    public event Action NewDay;
+    public event Action NewDayPeriod;
+
+    private int dayIndex;
+    private TimePeriods.DayPeriods dayPeriod;
+    private TimePeriods.DaysOfWeek dayOfWeek;
+    public TimePeriods.DaysOfWeek DayOfWeek
+    {
+        get
+        {
+            return dayOfWeek;
+        }
+    }
+
+    private void Start()
+    {
+        NewDay += IncrementDay;
+
+        dayOfWeek = TimePeriods.DaysOfWeek.Sunday;
+        dayPeriod = TimePeriods.DayPeriods.Dawn;
+
+        //Set World Time to Dawn
+        worldTime = 108000;
+    }
 
     private void Update()
     {
@@ -38,7 +58,15 @@ public class TimeManager : MonoBehaviour
 
     private void RunWorldTime()
     {
-        worldTime += Time.fixedDeltaTime * 60;
+        //A day should run for about 16mins
+        worldTime += Time.fixedDeltaTime * 50;
+
+        if (worldTime >= 432000)
+        {
+            worldTime = 0;
+
+            NewDay();
+        }            
 
         int minutes = (int)(worldTime / 60) % 60;
         int hours = (int)(worldTime / 3600) % 24;
@@ -48,28 +76,35 @@ public class TimeManager : MonoBehaviour
 
     private void TriggerTimeOfDayEvent()
     {
+        TimePeriods.DayPeriods tempDayPeriod = dayPeriod;
+
         switch(formattedWorldTime)
         {
-            case "00:00":
-                if (Midnight != null)
-                    Midnight();
+            case "00:00": 
+                dayPeriod = TimePeriods.DayPeriods.Midnight;
                 break;
             case "06:00":
-                if (Dawn != null)
-                    Dawn();
+                dayPeriod = TimePeriods.DayPeriods.Dawn;
                 break;
             case "12:00":
-                if (Midday != null)
-                    Midday();
+                dayPeriod = TimePeriods.DayPeriods.Midday;
                 break;
             case "18:00":
-                if (Dusk != null)
-                    Dusk();
+                dayPeriod = TimePeriods.DayPeriods.Dusk;
                 break;
         }
+
+        if (tempDayPeriod != dayPeriod)
+            if(NewDayPeriod != null)
+                NewDayPeriod();
     }
 
-    
+    private void IncrementDay()
+    {
+        dayIndex++;
+        if (dayIndex > 6)
+            dayIndex = 0;
 
-
+        dayOfWeek = (TimePeriods.DaysOfWeek)dayIndex;
+    }
 }

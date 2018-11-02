@@ -31,7 +31,7 @@ public class UIInventoryHandler : Entity
         playerView.PlayerInventory.ItemAddedToInventory += AddItemToInventoryUI;
     }
 
-    private void AddItemToInventoryUI(InventoryItem item, int inventoryIndex)
+    private void AddItemToInventoryUI(InventoryItemData item, int inventoryIndex)
     {
         int index = inventoryIndex - 1;
 

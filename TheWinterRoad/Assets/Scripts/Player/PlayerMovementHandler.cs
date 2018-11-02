@@ -59,10 +59,10 @@ public class PlayerMovementHandler : PlayerHandler
         SetRotation(newRotation);        
     }
 
-    public void InteractedWithResource(InteractableItem _interactableItem)
+    public void InteractedWithResource(int _interactIndex, InteractableItemData _interactableItem)
     {
         movementState = MovementState.Frozen;
-        m_playerView.PlayerAnimController.SetFloat("ActionIndex", (float)_interactableItem.interactionAnimationIndex);
+        m_playerView.PlayerAnimController.SetFloat("ActionIndex", (float)_interactableItem.interacts[_interactIndex].interactionAnimationIndex);
         m_playerView.PlayerAnimController.SetTrigger("Action");      
     }
 

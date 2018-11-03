@@ -52,7 +52,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1043716947695340}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.5615113, y: -1.6765724, z: 6.6106005}
+  m_LocalPosition: {x: -8.81, y: -1.6765724, z: 17.11}
   m_LocalScale: {x: 0.57677996, y: 0.57677996, z: 0.57677996}
   m_Children:
   - {fileID: 4642883537564554}
@@ -139,3 +139,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactableData: {fileID: 11400000, guid: 3a38ab8524697e34e8fab948d06cd34d, type: 2}
   itemSpawnPoint: {fileID: 4642883537564554}
+  cameraShakeProperties:
+    angle: 180
+    strength: 0.4
+    maxSpeed: 5
+    minSpeed: 1
+    duration: 0.1
+    noisePercent: 0.665
+    dampingPercent: 0.695
+    rotationPercent: 0.654

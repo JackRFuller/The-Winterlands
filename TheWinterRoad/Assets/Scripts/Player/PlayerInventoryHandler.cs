@@ -16,7 +16,7 @@ public class PlayerInventoryHandler : PlayerHandler
         }       
     }
 
-    public event Action<InventoryItemData, int> ItemAddedToInventory;
+    public event Action<List<InventoryItemData>> InventoryUpdated;   
 
     public bool CheckPlayerHasItem(string _itemName, int _numberRequired)
     {
@@ -42,8 +42,17 @@ public class PlayerInventoryHandler : PlayerHandler
         Inventory.Add(item);
         Debug.Log("Added " + item);
 
-        if (ItemAddedToInventory != null)
-            ItemAddedToInventory(item,Inventory.Count);
+        if (InventoryUpdated != null)
+            InventoryUpdated(inventory);
+    }
+
+    public void RemoveItemFromInventory(InventoryItemData item)
+    {
+        Inventory.Remove(item);
+        Debug.Log("Removed " + item);
+
+        if (InventoryUpdated != null)
+            InventoryUpdated(inventory);
     }
 	
 }

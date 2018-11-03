@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraView : Entity
 {
+    private CameraShake cameraShake;
+
     private Transform playerTransform;
     public Transform PlayerTransform
     {
@@ -13,8 +15,17 @@ public class CameraView : Entity
         }
     }
 
+    public CameraShake CameraShake
+    {
+        get
+        {
+            return cameraShake;
+        }
+    }
+
     private void Start()
     {
         playerTransform = GameManager.Instance.PlayerView.transform;
+        cameraShake = GetComponent<CameraShake>();
     }
 }

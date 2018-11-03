@@ -20,6 +20,7 @@ public class PlayerCanvasHandler : PlayerHandler
     protected override void Start ()
     {
         base.Start();
+
         m_playerView.PlayerInput.PlayerToggledInventoryMenu.AddListener(ToggleInventory);
         inventoryUIHandler.SetupInventory(m_playerView);
     }

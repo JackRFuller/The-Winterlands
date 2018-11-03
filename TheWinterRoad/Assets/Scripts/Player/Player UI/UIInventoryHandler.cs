@@ -28,15 +28,25 @@ public class UIInventoryHandler : Entity
 
     public void SetupInventory(PlayerView playerView)
     {
-        playerView.PlayerInventory.ItemAddedToInventory += AddItemToInventoryUI;
+        playerView.PlayerInventory.InventoryUpdated += UpdateInventoryUI;
+        
     }
 
-    private void AddItemToInventoryUI(InventoryItemData item, int inventoryIndex)
+    private void UpdateInventoryUI(List<InventoryItemData> inventory)
     {
-        int index = inventoryIndex - 1;
-
-        inventoryItemIconImages[index].sprite = item.itemIcon;
-        inventoryItemIconImages[index].enabled = true;
+        for (int i = 0; i < inventoryButtonHandlers.Length; i++)
+        {
+            if(i < inventory.Count)
+            {
+                inventoryItemIconImages[i].sprite = inventory[i].itemIcon;
+                inventoryItemIconImages[i].enabled = true;
+            }
+            else
+            {
+                inventoryItemIconImages[i].sprite = null;
+                inventoryItemIconImages[i].enabled = false;
+            }
+        }
     }
 
     #region InventoryShowingAndHidingInUI

@@ -19,8 +19,9 @@ public class PlayerInteractionHandler : PlayerHandler
         }
     }
 
-    private int maxInteractsAvailable;
+    private bool[] interactsAvailable = new bool[3];
     private int currentInteractIndex;
+    private bool interactJustOccured; //Check to make sure we still have items to interact
 
     protected override void Start()
     {
@@ -47,19 +48,19 @@ public class PlayerInteractionHandler : PlayerHandler
             if(hit.collider.tag == "Interactable")
             {
                 //Check if we've already got Resource info
-                if(interactTransform == null || interactTransform != hit.transform)
+                if(interactTransform == null || interactTransform != hit.transform || interactJustOccured)
                 {
                     FoundInteractable(hit.transform);
                 }
             }
             else
             {
-                RemoveInteractable();
+                RemoveInteractable();                
             }
         }
         else
         {
-            RemoveInteractable();
+            RemoveInteractable();            
         }
     }
 
@@ -85,20 +86,31 @@ public class PlayerInteractionHandler : PlayerHandler
                 if (m_playerView.PlayerInventory.CheckPlayerHasItem(item.itemName, numberRequired))
                 {
                     EnableInteractable(interactIndex);
-                }                
+                }
+                else
+                {
+                    DisableInteractableAction(interactIndex);
+                }
             }
             else
             {
                 EnableInteractable(interactIndex);                
             }
         }
+
+        interactJustOccured = false;
      
     }
 
     private void EnableInteractable(int interactIndex)
     {
-        maxInteractsAvailable++;
-         m_playerView.PlayerInput.PlayerInteract += InteractWithResource;
+        interactsAvailable[interactIndex] = true;
+        m_playerView.PlayerInput.PlayerInteract += InteractWithResource;
+    }
+
+    private void DisableInteractableAction(int interactIndex)
+    {
+        interactsAvailable[interactIndex] = false;
     }
 
     /// <summary>
@@ -108,7 +120,7 @@ public class PlayerInteractionHandler : PlayerHandler
     private void InteractWithResource(int interactIndex)
     {
         //Check interact is within range
-        if(interactIndex <= maxInteractsAvailable)
+        if (interactsAvailable[interactIndex])
         {
             currentInteractIndex = interactIndex;
             m_playerView.PlayerMovement.InteractedWithResource(currentInteractIndex, interactable.InteractableItem);
@@ -121,6 +133,7 @@ public class PlayerInteractionHandler : PlayerHandler
     public void Interact()
     {
         interactable.Interact(currentInteractIndex,m_playerView);
+        interactJustOccured = true;
     }
 
     private void RemoveInteractable()
@@ -128,9 +141,8 @@ public class PlayerInteractionHandler : PlayerHandler
         if(interactTransform != null)
         {
             interactTransform = null;
-            maxInteractsAvailable = 0;
-            m_playerView.PlayerInput.PlayerInteract -= InteractWithResource;
             m_playerView.PlayerUIHandler.InteractActionsHandler.HideInteractActions();
+            m_playerView.PlayerInput.PlayerInteract -= null;
         }
     }
 

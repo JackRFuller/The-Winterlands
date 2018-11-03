@@ -100,18 +100,24 @@ public class PlayerInputHandler : PlayerHandler
     {
         if(Input.GetMouseButtonDown(0))
         {
-            PlayerInteract(0);
+           Interact(0);
         }
 
         if(Input.GetMouseButtonDown(1))
         {
-            PlayerInteract(1);
+            Interact(1);
         }
 
         if(Input.GetKeyDown(KeyCode.E))
         {
-            PlayerInteract(2);
+            Interact(2);
         }
+    }
+
+    private void Interact(int interactIndex)
+    {
+        if (PlayerInteract != null)
+            PlayerInteract(interactIndex);
     }
 
     private void GetInventoryInput()

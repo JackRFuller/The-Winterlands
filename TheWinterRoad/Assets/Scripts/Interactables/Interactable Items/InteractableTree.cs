@@ -6,10 +6,15 @@ public class InteractableTree : Interactable
 {
     [SerializeField]
     private Transform itemSpawnPoint;
+    [SerializeField]
+    public CameraShake.Properties cameraShakeProperties;
 
     public override void InteractOne()
     {
         interactProgress++;
+
+        //GameManager.Instance.CameraView.CameraShake.StartShake(cameraShakeProperties);
+
         if (interactProgress == interactableData.interacts[interactIndex].numberofRequiredInteracts)
         {
             SpawnItem();

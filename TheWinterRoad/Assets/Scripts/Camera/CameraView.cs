@@ -26,6 +26,5 @@ public class CameraView : Entity
     private void Start()
     {
         playerTransform = GameManager.Instance.PlayerView.transform;
-        cameraShake = GetComponent<CameraShake>();
     }
 }

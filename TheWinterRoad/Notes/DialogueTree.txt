@@ -1,0 +1,21 @@
+Dialogue Tree
+
+class DialogueTree
+{
+	Dialogue[]
+}
+
+class Dialogue
+{
+	Statement
+	DialogueOptions[]	
+}
+
+class DialogueOptions
+{
+	Statement
+	LinkedDialogueIndex
+	RequiresItem
+	ItemRequired	
+}
+

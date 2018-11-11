@@ -23,9 +23,14 @@ public class PlayerInteractionHandler : PlayerHandler
     private int currentInteractIndex;
     private bool interactJustOccured; //Check to make sure we still have items to interact
 
+    private bool canInteract = true;
+
     protected override void Start()
     {
         base.Start();
+
+        m_playerView.PlayerUIHandler.PlayerOpenedMenu += BlockInteract;
+        m_playerView.PlayerUIHandler.PlayerClosedMenu += FreeInteract;
     }
 
 
@@ -119,6 +124,9 @@ public class PlayerInteractionHandler : PlayerHandler
     /// <param name="interactIndex"></param>
     private void InteractWithResource(int interactIndex)
     {
+        if (!canInteract)
+            return;
+
         //Check interact is within range
         if (interactsAvailable[interactIndex])
         {
@@ -149,5 +157,15 @@ public class PlayerInteractionHandler : PlayerHandler
     void UpdateRaycastOrigin()
     {
         rayCastOrigin = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
+    }
+
+    private void BlockInteract()
+    {
+        canInteract = false;
+    }
+
+    private void FreeInteract()
+    {
+        canInteract = true;
     }
 }

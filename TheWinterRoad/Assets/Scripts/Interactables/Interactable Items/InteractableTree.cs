@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class InteractableTree : Interactable
-{
-    [SerializeField]
-    private Transform itemSpawnPoint;
+{  
     [SerializeField]
     public CameraShake.Properties cameraShakeProperties;
 
@@ -30,7 +28,10 @@ public class InteractableTree : Interactable
                 float chanceOfDrop = Random.Range(0, 100);
                 if (chanceOfDrop < interactableData.interacts[0].awardedInventoryItems[inventoryItemIndex].spawnRates[spawnRateIndex])
                 {
-                    Instantiate(interactableData.interacts[0].awardedInventoryItems[inventoryItemIndex].awardedInventoryItem.itemPrefab, itemSpawnPoint.position, itemSpawnPoint.rotation);
+                    Vector2 offset = UnityEngine.Random.insideUnitCircle * 1.5f;
+                    Vector3 dropArea = new Vector3(transform.position.x + offset.x, transform.position.y + 2, transform.position.z + offset.y);
+
+                    Instantiate(interactableData.interacts[0].awardedInventoryItems[inventoryItemIndex].awardedInventoryItem.itemPrefab, dropArea, Quaternion.identity);
                 }
             }
         }

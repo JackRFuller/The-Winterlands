@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,10 +10,9 @@ public class PlayerInputHandler : PlayerHandler
     private float m_YInput;
     private bool isCrouching;
     private bool isRunning;
-    
-    [HideInInspector]
-    public UnityEvent PlayerToggledInventoryMenu;
+    private bool canInteract = true;
 
+    public event Action ToggleInventory;
     public event UnityAction<int> PlayerInteract;   
 
     public float XInput
@@ -42,34 +42,29 @@ public class PlayerInputHandler : PlayerHandler
         {
             return isRunning;
         }       
-    }
-
-    private InputState inputState = InputState.Free;
-    private enum InputState
-    {
-        Free,
-        Locked,
-    }
+    }    
 
     protected override void Start()
     {
         base.Start();
         LockCursorAndMouse();
+
+        m_playerView.PlayerUIHandler.PlayerOpenedMenu += UnlockCursorAndMouse;       
+        m_playerView.PlayerUIHandler.PlayerClosedMenu += LockCursorAndMouse;
     }
 
     private void Update()
-    {
-        if(inputState == InputState.Free)
-        {
-            GetMovementInput();
-            GetInteractInput();
-            GetCrouchInput();
-            GetSprintingInput();
-        }
-      
+    {        
+        GetMovementInput();
+        GetInteractInput();
+        GetCrouchInput();
+        GetSprintingInput();     
+        
         GetInventoryInput();
         GetPauseInput();
     }
+
+    #region Movement Input
 
     private void GetMovementInput()
     {
@@ -97,8 +92,22 @@ public class PlayerInputHandler : PlayerHandler
         }
     }
 
+    #endregion
+
+    private void GetInventoryInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (ToggleInventory != null)
+                ToggleInventory();
+        }
+    }
+
     private void GetInteractInput()
     {
+        if (!canInteract)
+            return;
+
         if(Input.GetMouseButtonDown(0))
         {
            Interact(0);
@@ -115,41 +124,20 @@ public class PlayerInputHandler : PlayerHandler
         }
     }
 
-    private void GetPauseInput()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            GameManager.Instance.ToggleGameState();
-    }
-
     private void Interact(int interactIndex)
     {
         if (PlayerInteract != null)
             PlayerInteract(interactIndex);
     }
 
-    private void GetInventoryInput()
+    private void GetPauseInput()
     {
-        if(Input.GetKeyDown(KeyCode.Tab))
-        {
-            if (inputState == InputState.Free)
-            {
-                inputState = InputState.Locked;
-                UnlockCursorAndMouse();
-            }               
-            else
-            {
-                inputState = InputState.Free;
-                LockCursorAndMouse();
-            }
-               
-
-            if (PlayerToggledInventoryMenu != null)
-                PlayerToggledInventoryMenu.Invoke();
-        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+            GameManager.Instance.ToggleGameState();
     }
 
     public void LockCursorAndMouse()
-    {
+    {        
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }

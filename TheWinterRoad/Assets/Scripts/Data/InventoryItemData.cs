@@ -12,4 +12,8 @@ public class InventoryItemData : ScriptableObject
     public GameObject itemPrefab;
     public bool hasUnlockedTool;
     public bool isDropable;
+    public bool isBurnable;
+    public float burnTime;
+    public float burnIntensity;
+    public float pickupTime;
 }

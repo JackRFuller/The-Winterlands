@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c5622691f947c04098c230522790bc6, type: 3}
+  m_Name: Cooking
+  m_EditorClassIdentifier: 
+  itemName: Grab
+  itemDescription: 
+  itemIcon: {fileID: 21300000, guid: e697b507516bda64c9ca3a968c80a365, type: 3}
+  itemPrefab: {fileID: 0}
+  hasUnlockedTool: 0
+  isDropable: 0
+  isBurnable: 0
+  burnTime: 0
+  burnIntensity: 0
+  pickupTime: 0

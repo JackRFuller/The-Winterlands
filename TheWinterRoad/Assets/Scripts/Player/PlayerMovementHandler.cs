@@ -19,10 +19,10 @@ public class PlayerMovementHandler : PlayerHandler
 
     protected override void Start()
     {
-        base.Start();
+        base.Start();           
 
-        m_playerView.PlayerInput.PlayerToggledInventoryMenu.AddListener(TogglePlayerIntoAndFromCrouchPosition);
-        m_playerView.PlayerInput.PlayerToggledInventoryMenu.AddListener(ToggleMovementState);
+        m_playerView.PlayerUIHandler.PlayerOpenedMenu += FreezePlayerMovement;
+        m_playerView.PlayerUIHandler.PlayerClosedMenu += UnFreezeMovement;
     }
 
     // Update is called once per frame
@@ -54,8 +54,6 @@ public class PlayerMovementHandler : PlayerHandler
                 newRotation = Quaternion.LookRotation(lastRotation) * Quaternion.AngleAxis(45, Vector3.up);
         }
 
-
-
         SetRotation(newRotation);        
     }
 
@@ -66,10 +64,22 @@ public class PlayerMovementHandler : PlayerHandler
         m_playerView.PlayerAnimController.SetTrigger("Action");      
     }
 
+    public void FreezePlayerMovement()
+    {
+        movementState = MovementState.Frozen;
+        Debug.Log("Player Movement Frozen");
+    }
+
     public void UnFreezeMovement()
     {
-        movementState = MovementState.Free;
+        if(m_playerView.PlayerUIHandler.playerInMenuState != PlayerCanvasHandler.PlayerInMenu.InMenu)
+        {
+            movementState = MovementState.Free;
+            Debug.Log("Player Movement Free");
+        }
     }
+
+   
 
     /// <summary>
     /// Used when opening inventory
@@ -77,29 +87,11 @@ public class PlayerMovementHandler : PlayerHandler
     ///
     private void TogglePlayerIntoAndFromCrouchPosition()
     {
-        bool crouchingState = m_playerView.PlayerAnimController.GetBool("isCrouching");
-
-        if(movementState == MovementState.Free)
-        {
-            if (!crouchingState)
-                crouchingState = true;
-        }
-        else
-        {
-            crouchingState = false;
-        }
+        bool crouchingState = m_playerView.PlayerAnimController.GetBool("isCrouching");    
       
         m_playerView.PlayerAnimController.SetFloat("Movement Speed", 0);
-        m_playerView.PlayerAnimController.SetBool("isCrouching", crouchingState);
-    }
-
-    private void ToggleMovementState()
-    {
-        if (movementState == MovementState.Frozen)
-            movementState = MovementState.Free;
-        else
-            movementState = MovementState.Frozen;
-    }
+        m_playerView.PlayerAnimController.SetBool("isCrouching", !crouchingState);
+    }  
 
     private float ReturnPlayerMovementSpeed()
     {

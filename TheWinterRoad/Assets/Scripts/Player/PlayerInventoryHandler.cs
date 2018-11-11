@@ -57,7 +57,7 @@ public class PlayerInventoryHandler : PlayerHandler
 
     public void DropItem(int itemIndex)
     {
-        Vector2 offset = UnityEngine.Random.insideUnitCircle * 1.5f;
+        Vector2 offset = UnityEngine.Random.insideUnitCircle * 2f;
         Vector3 dropArea = new Vector3(transform.position.x + offset.x, transform.position.y + 1, transform.position.z + offset.y);     
         
         GameObject droppedItem = Instantiate(inventory[itemIndex].itemPrefab, dropArea, Quaternion.identity);

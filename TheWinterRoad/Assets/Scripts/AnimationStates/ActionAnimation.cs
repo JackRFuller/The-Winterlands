@@ -14,6 +14,5 @@ public class ActionAnimation : StateMachineBehaviour
         playerView.PlayerMovement.UnFreezeMovement();
 
         animator.ResetTrigger("Action");
-
     }
 }

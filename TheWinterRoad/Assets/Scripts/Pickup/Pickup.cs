@@ -13,6 +13,7 @@ public class Pickup : Entity
     private bool moveToPlayer;
     private const float moveSpeed = 10;
     private const float distanceNeededToDespawn = 0.25f;
+    private float pickupTime;
 
     private void Start()
     {
@@ -21,7 +22,20 @@ public class Pickup : Entity
 
     private void Update()
     {
+        RunPickUpTime();
+
         MoveToPlayer();
+    }
+
+    private void RunPickUpTime()
+    {
+        if (moveToPlayer)
+            return;
+
+        pickupTime += Time.deltaTime;
+
+        if (pickupTime > item.pickupTime)
+            Destroy(gameObject);
     }
 
     private void MoveToPlayer()

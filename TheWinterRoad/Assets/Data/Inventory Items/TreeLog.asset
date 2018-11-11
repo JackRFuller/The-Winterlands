@@ -17,3 +17,7 @@ MonoBehaviour:
   itemPrefab: {fileID: 1495045770425160, guid: 22186270141dfd4478874e56a3570acf, type: 2}
   hasUnlockedTool: 0
   isDropable: 1
+  isBurnable: 1
+  burnTime: 0
+  burnIntensity: 0
+  pickupTime: 10

@@ -13,6 +13,8 @@ public class UIBasicClockHandler : Entity
     private Transform clockFaceTransform;
     [SerializeField]
     private TMP_Text dayOfWeekText;
+    [SerializeField]
+    private TMP_Text timeOfTheDayText;
 
     private void Start()
     {
@@ -21,13 +23,17 @@ public class UIBasicClockHandler : Entity
         timeManager.NewDay += TriggerNewDay;
 
         dayOfWeekText.text = timeManager.DayOfWeek.ToString();
-        
-        this.enabled = false;
     }
 
     private void Update()
     {
+        FormatTime();
         RotateClock();
+    }
+
+    private void FormatTime()
+    {
+        timeOfTheDayText.text = timeManager.FormattedWorldTime;
     }
 
     private void TriggerNewTimeOfDay()
@@ -55,8 +61,7 @@ public class UIBasicClockHandler : Entity
             if(percentageComplete >= 1.0f)
             {
                 clockFaceTransform.eulerAngles = new Vector3(0, 0, clockFaceTransform.eulerAngles.z);
-                lerpingAttributes.isLerping = false;
-                this.enabled = false;
+                lerpingAttributes.isLerping = false;                
             }
 
         }

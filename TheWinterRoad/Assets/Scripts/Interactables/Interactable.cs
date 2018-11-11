@@ -7,7 +7,11 @@ using UnityEngine;
 public class Interactable : Entity
 {
     [SerializeField]
-    protected InteractableItemData interactableData;    
+    protected InteractableItemData interactableData; 
+
+    protected PlayerView playerView;
+    protected int interactIndex;
+
     public InteractableItemData InteractableItem
     {
         get
@@ -15,9 +19,13 @@ public class Interactable : Entity
             return interactableData;
         }
     }
-
-    protected PlayerView playerView;
-    protected int interactIndex;
+    public PlayerView PlayerView
+    {
+        get
+        {
+            return playerView;
+        }
+    }
 
     //Used if Interactable is Harvestable
     protected float interactProgress;

@@ -13,7 +13,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interacts:
   - requiredInventoryItem:
-      requiredInventoryItem: {fileID: 11400000, guid: ee75cdc6fd62974469ae410da55aad2d,
+      requiredInventoryItem: {fileID: 11400000, guid: 8f571d33571e8424a884a4204eb182f0,
+        type: 2}
+      quanityOfRequiredInventoryItem: 1
+    numberofRequiredInteracts: 1
+    interactionAnimationIndex: 0
+    awardedInventoryItems: []
+  - requiredInventoryItem:
+      requiredInventoryItem: {fileID: 11400000, guid: 72daf3b09077b4e44bead2c1decc59cf,
         type: 2}
       quanityOfRequiredInventoryItem: 1
     numberofRequiredInteracts: 1

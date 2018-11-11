@@ -38,6 +38,13 @@ public class UIInventoryHandler : Entity
     [SerializeField]
     private UIInventoryButtonHandler[] inventoryButtonHandlers;
 
+    private InventoryMode inventoryMode = InventoryMode.InventoryManagement;
+    private enum InventoryMode
+    {
+        InventoryManagement,
+        Campfire,
+    }
+
     public void SetupInventory(PlayerView _playerView)
     {
         playerView = _playerView;
@@ -71,6 +78,33 @@ public class UIInventoryHandler : Entity
             }
         }
     }
+
+
+    /// <summary>
+    /// Called from individual inventory buttons
+    /// </summary>
+    /// <param name="itemIndex"></param>
+    public void OnItemInInventoryClick(int itemIndex)
+    {
+        switch(inventoryMode)
+        {
+            case InventoryMode.InventoryManagement:
+                ShowAndUpdateItemDescriptionUI(itemIndex);
+                break;
+            case InventoryMode.Campfire:
+                AddBurnableObjectToCampfire(itemIndex);
+                break;
+        }
+    }
+
+    #region Campfire Inventory Management
+
+    private void AddBurnableObjectToCampfire(int itemIndex)
+    {
+
+    }
+
+    #endregion
 
     #region ItemDescriptionUI
 
@@ -134,11 +168,11 @@ public class UIInventoryHandler : Entity
 
     }
 
-    protected virtual void ShowInventory()
+    public void ShowInventory()
     {
+        playerView.PlayerUIHandler.PlayerOpenedAMenu();
         inventoryState = InventoryState.Visible;
-
-        if(inventoryAnimController.enabled == false)
+        if (inventoryAnimController.enabled == false)
         {
             inventoryAnimController.enabled = true;
             return;
@@ -147,11 +181,34 @@ public class UIInventoryHandler : Entity
         inventoryAnimController.SetBool("ShowInventory", true);
     }
 
-    protected virtual void HideInventory()
+    public void HideInventory()
     {
+        playerView.PlayerUIHandler.PlayerClosedAMenu();
         inventoryState = InventoryState.Hidden;
         itemDescriptionObject.SetActive(false);
         inventoryAnimController.SetBool("ShowInventory", false);
+    }
+
+    /// <summary>
+    /// Shows inventory for campfire and disables any buttons for non burnable items
+    /// </summary>
+    public void ShowInventoryForCampfire()
+    {
+        for (int i = 0; i < inventoryButtonHandlers.Length; i++)
+        {
+            if (i < inventory.Count)
+            {
+                if(!inventory[i].isBurnable)
+                {
+                    inventoryButtonHandlers[i].enabled = false;
+                    Color color = Color.white;
+                    color.a = 50;
+                    inventoryItemIconImages[i].color = color;
+                }                
+            }            
+        }
+
+        ShowInventory();
     }
 
     #endregion

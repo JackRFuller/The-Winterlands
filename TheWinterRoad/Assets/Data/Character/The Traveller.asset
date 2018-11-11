@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ad21f7ad43f8e04195dc5116f1a2cc3, type: 3}
+  m_Name: The Traveller
+  m_EditorClassIdentifier: 
+  characterPrefab: {fileID: 0}
+  characterAlias: The Traveller
+  characterName: Bob
+  characterInteractActions: {fileID: 11400000, guid: a617e681401a0fb44bb04e16d48c40c6,
+    type: 2}
+  characterDialogueTree: {fileID: 11400000, guid: 76cdce500809c584382ed4309707b23a,
+    type: 2}

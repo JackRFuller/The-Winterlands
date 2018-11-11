@@ -68,6 +68,7 @@ public class PlayerInputHandler : PlayerHandler
         }
       
         GetInventoryInput();
+        GetPauseInput();
     }
 
     private void GetMovementInput()
@@ -112,6 +113,12 @@ public class PlayerInputHandler : PlayerHandler
         {
             Interact(2);
         }
+    }
+
+    private void GetPauseInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            GameManager.Instance.ToggleGameState();
     }
 
     private void Interact(int interactIndex)

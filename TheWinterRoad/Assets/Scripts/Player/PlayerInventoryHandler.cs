@@ -13,10 +13,10 @@ public class PlayerInventoryHandler : PlayerHandler
         get
         {
             return inventory;
-        }       
+        }
     }
 
-    public event Action<List<InventoryItemData>> InventoryUpdated;   
+    public event Action<List<InventoryItemData>> InventoryUpdated;
 
     public bool CheckPlayerHasItem(string _itemName, int _numberRequired)
     {
@@ -24,10 +24,10 @@ public class PlayerInventoryHandler : PlayerHandler
 
         for (int i = 0; i < Inventory.Count; i++)
         {
-            if(Inventory[i].itemName == _itemName)
+            if (Inventory[i].itemName == _itemName)
             {
                 numRequired++;
-                if(numRequired == _numberRequired)
+                if (numRequired == _numberRequired)
                 {
                     return true;
                 }
@@ -50,6 +50,19 @@ public class PlayerInventoryHandler : PlayerHandler
     {
         Inventory.Remove(item);
         Debug.Log("Removed " + item);
+
+        if (InventoryUpdated != null)
+            InventoryUpdated(inventory);
+    }
+
+    public void DropItem(int itemIndex)
+    {
+        Vector2 offset = UnityEngine.Random.insideUnitCircle * 1.5f;
+        Vector3 dropArea = new Vector3(transform.position.x + offset.x, transform.position.y + 1, transform.position.z + offset.y);     
+        
+        GameObject droppedItem = Instantiate(inventory[itemIndex].itemPrefab, dropArea, Quaternion.identity);
+
+        RemoveItemFromInventory(inventory[itemIndex]);
 
         if (InventoryUpdated != null)
             InventoryUpdated(inventory);

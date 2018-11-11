@@ -8,6 +8,8 @@ public class PlayerCanvasHandler : PlayerHandler
     private UIInventoryHandler inventoryUIHandler;
     [SerializeField]
     private UIInteractActionsHandler interactActionsHandler;
+    [SerializeField]
+    private UIDialogueBoxHandler dialogueBoxHandler;
     public UIInteractActionsHandler InteractActionsHandler
     {
         get
@@ -28,5 +30,10 @@ public class PlayerCanvasHandler : PlayerHandler
     private void ToggleInventory()
     {
         inventoryUIHandler.ToggleInventory();       
+    }
+
+    public void ToggleDialogueBox()
+    {
+        dialogueBoxHandler.ToggleDialogueBoxSHowing();
     }
 }

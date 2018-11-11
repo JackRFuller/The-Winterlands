@@ -6,6 +6,9 @@ using TMPro;
 
 public class UIInventoryButtonHandler : Entity
 {
+    private UIInventoryHandler uIInventoryHandler;
+    private int itemSlotIndex;
+
     [SerializeField]
     private GameObject labelObject;
     [SerializeField]
@@ -15,6 +18,12 @@ public class UIInventoryButtonHandler : Entity
     private void Start()
     {
         labelObject.SetActive(false);
+    }
+
+    public void SetUpButton(UIInventoryHandler _uIInventoryHandler, int _itemSlotIndex)
+    {
+        uIInventoryHandler = _uIInventoryHandler;
+        itemSlotIndex = _itemSlotIndex;        
     }
 
     public void AssignItemIndex(int itemIndex)
@@ -34,5 +43,10 @@ public class UIInventoryButtonHandler : Entity
     public void OnHoverExit()
     {
         labelObject.SetActive(false);       
+    }
+
+    public void OnClick()
+    {
+        uIInventoryHandler.ShowAndUpdateItemDescriptionUI(itemSlotIndex);
     }
 }

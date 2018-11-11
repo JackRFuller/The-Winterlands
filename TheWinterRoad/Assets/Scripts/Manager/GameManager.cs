@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -43,6 +44,13 @@ public class GameManager : MonoBehaviour
             return timeManager;
         }
     }
+   
+    private GameState gameState = GameState.Playing;
+    private enum GameState
+    {
+        Frozen,
+        Playing,
+    }
 
     private void Awake()
     {
@@ -56,5 +64,33 @@ public class GameManager : MonoBehaviour
         }
 
         timeManager = GetComponent<TimeManager>();
+    }
+
+    public void ToggleGameState()
+    {
+        switch(gameState)
+        {
+            case GameState.Playing:
+                FreezeGame();
+                break;
+
+            case GameState.Frozen:
+                UnFreezeGame();              
+                break;
+        }
+    }
+
+    public void FreezeGame()
+    {
+        Time.timeScale = 0;
+        gameState = GameState.Frozen;
+        Debug.Log("Freeze Game");
+    }
+
+    public void UnFreezeGame()
+    {
+        Time.timeScale = 1;
+        gameState = GameState.Playing;
+        Debug.Log("Unfreeze Game");
     }
 }

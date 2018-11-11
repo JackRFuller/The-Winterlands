@@ -25,6 +25,14 @@ public class PlayerInteractionHandler : PlayerHandler
 
     private bool canInteract = true;
 
+    public Interactable Interactable
+    {
+        get
+        {
+            return interactable;
+        }
+    }
+
     protected override void Start()
     {
         base.Start();

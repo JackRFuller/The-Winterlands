@@ -18,6 +18,6 @@ MonoBehaviour:
   hasUnlockedTool: 0
   isDropable: 1
   isBurnable: 1
-  burnTime: 0
-  burnIntensity: 0
+  burnTime: 120
+  burnIntensity: 1
   pickupTime: 10

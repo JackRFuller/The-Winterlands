@@ -19,6 +19,14 @@ public class PlayerCanvasHandler : PlayerHandler
         }
     }
 
+    public UIInventoryHandler InventoryUIHandler
+    {
+        get
+        {
+            return inventoryUIHandler;
+        }
+    }
+
     [HideInInspector]
     public PlayerInMenu playerInMenuState = PlayerInMenu.Free;
     public enum PlayerInMenu

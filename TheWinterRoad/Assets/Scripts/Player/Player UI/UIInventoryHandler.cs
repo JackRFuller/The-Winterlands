@@ -7,6 +7,7 @@ using TMPro;
 public class UIInventoryHandler : Entity
 {
     private PlayerView playerView;
+    private InteractableCampFire campFire;
 
     protected Animator inventoryAnimController;
 
@@ -64,17 +65,17 @@ public class UIInventoryHandler : Entity
     {
         inventory = _inventory;
 
-        for (int i = 0; i < inventoryButtonHandlers.Length; i++)
+        for (int inventoryIndex = 0; inventoryIndex < inventoryButtonHandlers.Length; inventoryIndex++)
         {
-            if(i < inventory.Count)
+            if(inventoryIndex < inventory.Count)
             {
-                inventoryItemIconImages[i].sprite = inventory[i].itemIcon;
-                inventoryItemIconImages[i].enabled = true;
+                inventoryItemIconImages[inventoryIndex].sprite = inventory[inventoryIndex].itemIcon;
+                inventoryItemIconImages[inventoryIndex].enabled = true;               
             }
             else
             {
-                inventoryItemIconImages[i].sprite = null;
-                inventoryItemIconImages[i].enabled = false;
+                inventoryItemIconImages[inventoryIndex].sprite = null;
+                inventoryItemIconImages[inventoryIndex].enabled = false;                
             }
         }
     }
@@ -101,7 +102,13 @@ public class UIInventoryHandler : Entity
 
     private void AddBurnableObjectToCampfire(int itemIndex)
     {
+        campFire.AddItemToCampfire(inventory[itemIndex]);
+        playerView.PlayerInventory.RemoveItemFromInventory(inventory[itemIndex]);
+    }
 
+    public void ReceiveActiveCampfire(InteractableCampFire _interactableCampFire)
+    {
+        campFire = _interactableCampFire;
     }
 
     #endregion
@@ -159,7 +166,8 @@ public class UIInventoryHandler : Entity
         switch (inventoryState)
         {
             case InventoryState.Hidden:
-                ShowInventory();
+                PrepInventoryForManagement();
+                RevealInventory();
                 break;
             case InventoryState.Visible:
                 HideInventory();
@@ -168,15 +176,16 @@ public class UIInventoryHandler : Entity
 
     }
 
-    public void ShowInventory()
+    public void RevealInventory()
     {
         playerView.PlayerUIHandler.PlayerOpenedAMenu();
+
         inventoryState = InventoryState.Visible;
         if (inventoryAnimController.enabled == false)
         {
             inventoryAnimController.enabled = true;
             return;
-        }
+        } 
 
         inventoryAnimController.SetBool("ShowInventory", true);
     }
@@ -189,26 +198,45 @@ public class UIInventoryHandler : Entity
         inventoryAnimController.SetBool("ShowInventory", false);
     }
 
+    public void PrepInventoryForManagement()
+    {
+        for (int inventoryIndex = 0; inventoryIndex < inventoryButtonHandlers.Length; inventoryIndex++)
+        {
+            if(inventoryIndex < inventory.Count)
+            {
+                inventoryButtonHandlers[inventoryIndex].EnableButton();
+            }
+            else
+            {
+                inventoryButtonHandlers[inventoryIndex].DisableButton();
+            }
+        }
+
+        inventoryMode = InventoryMode.InventoryManagement;
+    }
+
     /// <summary>
     /// Shows inventory for campfire and disables any buttons for non burnable items
     /// </summary>
-    public void ShowInventoryForCampfire()
+    public void PrepInventoryForCampfire()
     {
-        for (int i = 0; i < inventoryButtonHandlers.Length; i++)
+        for (int inventoryIndex = 0; inventoryIndex < inventory.Count; inventoryIndex++)
         {
-            if (i < inventory.Count)
+            if (!inventory[inventoryIndex].isBurnable)
             {
-                if(!inventory[i].isBurnable)
-                {
-                    inventoryButtonHandlers[i].enabled = false;
-                    Color color = Color.white;
-                    color.a = 50;
-                    inventoryItemIconImages[i].color = color;
-                }                
-            }            
+                inventoryButtonHandlers[inventoryIndex].DisableButton();
+                Color color = Color.white;
+                color.a = 50;
+                inventoryItemIconImages[inventoryIndex].color = color;
+            }
+            else
+            {
+                inventoryButtonHandlers[inventoryIndex].EnableButton();
+            }
         }
 
-        ShowInventory();
+        inventoryMode = InventoryMode.Campfire;
+        RevealInventory();
     }
 
     #endregion

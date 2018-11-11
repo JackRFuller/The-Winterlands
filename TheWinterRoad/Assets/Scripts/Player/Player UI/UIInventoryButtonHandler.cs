@@ -6,43 +6,31 @@ using TMPro;
 
 public class UIInventoryButtonHandler : Entity
 {
+    private Button slotButton;
     private UIInventoryHandler uIInventoryHandler;
     private int itemSlotIndex;
-
-    [SerializeField]
-    private GameObject labelObject;
-    [SerializeField]
-    private TMP_Text labelText;
-    private int labelIndex;
-
-    private void Start()
-    {
-        labelObject.SetActive(false);
-    }
+    private int labelIndex;    
 
     public void SetUpButton(UIInventoryHandler _uIInventoryHandler, int _itemSlotIndex)
     {
         uIInventoryHandler = _uIInventoryHandler;
-        itemSlotIndex = _itemSlotIndex;        
+        itemSlotIndex = _itemSlotIndex;
+        slotButton = GetComponent<Button>();
     }
 
     public void AssignItemIndex(int itemIndex)
     {
         labelIndex = itemIndex;
     }
-
-    public void OnHoverOver()
+    
+    public void EnableButton()
     {
-        if(GameManager.Instance.PlayerView.PlayerInventory.Inventory.Count > labelIndex)
-        {
-            labelText.text = GameManager.Instance.PlayerView.PlayerInventory.Inventory[labelIndex].itemName;
-            labelObject.SetActive(true);
-        }
+        slotButton.enabled = true;
     }
 
-    public void OnHoverExit()
+    public void DisableButton()
     {
-        labelObject.SetActive(false);       
+        slotButton.enabled = false;
     }
 
     public void OnClick()

@@ -5,12 +5,12 @@ using System;
 
 public class PlayerCanvasHandler : PlayerHandler
 {
-    [SerializeField]
-    private UIInventoryHandler inventoryUIHandler;   
-    [SerializeField]
-    private UIInteractActionsHandler interactActionsHandler;
-    [SerializeField]
-    private UIDialogueBoxHandler dialogueBoxHandler;
+    [SerializeField] private UIInventoryHandler inventoryUIHandler;   
+    [SerializeField] private UIInteractActionsHandler interactActionsHandler;
+    [SerializeField] private UIDialogueBoxHandler dialogueBoxHandler;
+    [SerializeField] private UIItemPickHandler itemPickUpHandler;
+    
+
     public UIInteractActionsHandler InteractActionsHandler
     {
         get
@@ -18,7 +18,6 @@ public class PlayerCanvasHandler : PlayerHandler
             return interactActionsHandler;
         }
     }
-
     public UIInventoryHandler InventoryUIHandler
     {
         get
@@ -26,7 +25,6 @@ public class PlayerCanvasHandler : PlayerHandler
             return inventoryUIHandler;
         }
     }
-
     [HideInInspector]
     public PlayerInMenu playerInMenuState = PlayerInMenu.Free;
     public enum PlayerInMenu
@@ -45,6 +43,7 @@ public class PlayerCanvasHandler : PlayerHandler
 
         m_playerView.PlayerInput.ToggleInventory += ToggleInventory;
         inventoryUIHandler.SetupInventory(m_playerView);
+        itemPickUpHandler.SetupPlayerUIHandler(m_playerView);
     }
 
     private void ToggleInventory()

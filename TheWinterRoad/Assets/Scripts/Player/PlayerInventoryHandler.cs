@@ -17,6 +17,7 @@ public class PlayerInventoryHandler : PlayerHandler
     }
 
     public event Action<List<InventoryItemData>> InventoryUpdated;
+    public event Action<InventoryItemData> ItemUpdatedInInventory;
 
     public bool CheckPlayerHasItem(string _itemName, int _numberRequired)
     {
@@ -44,6 +45,9 @@ public class PlayerInventoryHandler : PlayerHandler
 
         if (InventoryUpdated != null)
             InventoryUpdated(inventory);
+
+        if(ItemUpdatedInInventory != null)
+            ItemUpdatedInInventory(item);
     }
 
     public void RemoveItemFromInventory(InventoryItemData item)

@@ -157,8 +157,15 @@ public class PlayerInteractionHandler : PlayerHandler
         if(interactTransform != null)
         {
             interactTransform = null;
-            m_playerView.PlayerUIHandler.InteractActionsHandler.HideInteractActions();
-            m_playerView.PlayerInput.PlayerInteract -= null;
+            m_playerView.PlayerUIHandler.InteractActionsHandler.HideInteractActions();            
+            m_playerView.PlayerInput.PlayerInteract -= InteractWithResource;
+
+            for(int i = 0; i < interactsAvailable.Length; i++)
+            {
+                interactsAvailable[i] = false;                
+            }
+
+            Debug.Log("Removed Interaction");
         }
     }
 

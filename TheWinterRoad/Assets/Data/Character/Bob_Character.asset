@@ -18,8 +18,8 @@ MonoBehaviour:
   characterInteractActions: {fileID: 0}
   characterDialogueTree: {fileID: 0}
   arrivalDay: 0
-  arrivalPeriod: 0
-  arrivalTime: 6.5
   returnDay: 1
-  returnPeriod: 0
-  returnTime: 6
+  minArrivalTime: 6.2662873
+  maxArrivalTime: 11.247343
+  minReturnTime: 0
+  maxReturnTime: 0

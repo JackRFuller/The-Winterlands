@@ -12,33 +12,26 @@ public class CharacterData : ScriptableObject
     public string characterName;
 
     public InteractableItemData characterInteractActions;
-    public DialogueTreeData characterDialogueTree;
+    public DialogueTreeData characterDialogueTree;   
 
-    [Header("Arrival Schedule")]
     public TimePeriods.DaysOfWeek arrivalDay;
-    public TimePeriods.DayPeriods arrivalPeriod;
-    [Tooltip("Time is in 24hrs - 11:30 = 11.5")]
-    public float arrivalTime;
-    public float ArrivalTimeInWorldTime
+    public TimePeriods.DaysOfWeek returnDay;         
+    [HideInInspector] public float minArrivalTime;
+    [HideInInspector] public float maxArrivalTime;
+
+    [HideInInspector] public float minReturnTime;
+    [HideInInspector] public float maxReturnTime;
+
+
+    public void SetArrivalTimeLimits(float min, float max)
     {
-        get
-        {
-            return arrivalTime * 3600 * 5;
-        }
+        minArrivalTime = min;
+        maxArrivalTime = max;
     }
 
-    [Header("Return Schedule")]
-    public TimePeriods.DaysOfWeek returnDay;
-    public TimePeriods.DayPeriods returnPeriod;
-    [Tooltip("Time is in 24hrs - 11:30 = 11.5")]
-    public float returnTime;
-    public float ReturnTimeInWorldTime
+    public void SetReturnTimeLimits(float min, float max)
     {
-        get
-        {
-            return returnTime * 3600 * 5;
-        }
+        minReturnTime = min;
+        maxReturnTime = max;
     }
-    
-    public DateTime arrivalDateTime;
 }

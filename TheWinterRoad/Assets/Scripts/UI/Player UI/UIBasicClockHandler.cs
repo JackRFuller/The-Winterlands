@@ -33,7 +33,7 @@ public class UIBasicClockHandler : Entity
 
     private void FormatTime()
     {
-        timeOfTheDayText.text = timeManager.FormattedWorldTime;
+        timeOfTheDayText.text = timeManager.WorldTime.ToString("HH" + ":" + "mm");
     }
 
     private void TriggerNewTimeOfDay()

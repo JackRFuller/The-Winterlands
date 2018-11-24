@@ -11,6 +11,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ad21f7ad43f8e04195dc5116f1a2cc3, type: 3}
   m_Name: Bob_Character
   m_EditorClassIdentifier: 
-  characterName: Bob
   characterPrefab: {fileID: 1498499790507446, guid: 8bea42b7dcb64954588cdc3f84822a14,
     type: 2}
+  characterAlias: 
+  characterName: Bob
+  characterInteractActions: {fileID: 0}
+  characterDialogueTree: {fileID: 0}
+  arrivalDay: 0
+  arrivalPeriod: 0
+  arrivalTime: 6.5
+  returnDay: 1
+  returnPeriod: 0
+  returnTime: 6

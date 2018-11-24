@@ -5,24 +5,9 @@ using System;
 
 public class TimeManager : MonoBehaviour
 {
-    [SerializeField]
-    private float worldTime;
-    private string formattedWorldTime;
 
-    public float WorldTime
-    {
-        get
-        {
-            return worldTime;
-        }
-    }
-    public string FormattedWorldTime
-    {
-        get
-        {
-            return formattedWorldTime;
-        }
-    }
+    private  DateTime worldTime;
+    public DateTime WorldTime {get{return worldTime;}}
 
     //Events
     public event Action NewDay;
@@ -38,47 +23,55 @@ public class TimeManager : MonoBehaviour
             return dayOfWeek;
         }
     }
+    public TimePeriods.DayPeriods DayPeriod
+    {
+        get
+        {
+            return dayPeriod;
+        }
+    }
 
     private void Start()
     {
         NewDay += IncrementDay;
 
         dayOfWeek = TimePeriods.DaysOfWeek.Sunday;
-        dayPeriod = TimePeriods.DayPeriods.Dawn;
+        dayPeriod = TimePeriods.DayPeriods.Dawn;      
 
-        //Set World Time to Dawn
-        worldTime = 108000;
+        worldTime = new DateTime(1435, 1,1,6,0,0);
+        
+        StartCoroutine(IncrementTime());
     }
 
-    private void Update()
+    private IEnumerator IncrementTime()
     {
-        RunWorldTime();
-        TriggerTimeOfDayEvent();
-    }
-
-    private void RunWorldTime()
-    {
-        //A day should run for about 16mins
-        worldTime += Time.fixedDeltaTime * 50;
-
-        if (worldTime >= 432000)
+        while(true)
         {
-            worldTime = 0;
+            DateTime oldWorldTime = worldTime;
 
-            NewDay();
-        }            
+            yield return new WaitForSecondsRealtime(1f);
+            DateTime currentTime = worldTime.AddMinutes(1.0f);
+            worldTime = currentTime;
 
-        int minutes = (int)(worldTime / 60) % 60;
-        int hours = (int)(worldTime / 3600) % 24;
+            TriggerTimeOfDayEvent();
 
-        formattedWorldTime = string.Format("{0:00}:{1:00}", hours, minutes);
+            if(oldWorldTime.Day != worldTime.Day)
+            {
+                if(NewDay != null)
+                    NewDay();
+
+                Debug.Log("New Day");
+            }
+        }
     }
 
     private void TriggerTimeOfDayEvent()
     {
+        string formattedTime = worldTime.ToString("HH" + ":" + "mm");
+
         TimePeriods.DayPeriods tempDayPeriod = dayPeriod;
 
-        switch(formattedWorldTime)
+        switch(formattedTime)
         {
             case "00:00": 
                 dayPeriod = TimePeriods.DayPeriods.Midnight;

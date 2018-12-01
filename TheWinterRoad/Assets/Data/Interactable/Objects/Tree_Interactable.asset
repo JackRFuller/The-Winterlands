@@ -25,3 +25,4 @@ MonoBehaviour:
       - 100
       - 75
       - 25
+    interactHealthCost: 2

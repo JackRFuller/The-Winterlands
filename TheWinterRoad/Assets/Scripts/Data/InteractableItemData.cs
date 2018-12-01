@@ -14,7 +14,8 @@ public class Interact
     public RequiredInventoryItems requiredInventoryItem;
     public float numberofRequiredInteracts;    
     public int interactionAnimationIndex; //0 = Pickup, 1 = Chop 
-    public AwardedInventoryItem[] awardedInventoryItems;
+    public AwardedInventoryItem[] awardedInventoryItems;    
+    public float interactHealthCost = 0;
 }
 
 [System.Serializable]

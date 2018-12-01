@@ -150,6 +150,11 @@ public class PlayerInteractionHandler : PlayerHandler
     {
         interactable.Interact(currentInteractIndex,m_playerView);
         interactJustOccured = true;
+
+        float healthCost = interactable.InteractableItem.interacts[currentInteractIndex].interactHealthCost;
+        m_playerView.PlayerHealthHandler.RemovePlayerHealth(healthCost);
+
+        Debug.Log("Health Cost: " + healthCost);
     }
 
     private void RemoveInteractable()

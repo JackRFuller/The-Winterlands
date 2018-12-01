@@ -9,6 +9,7 @@ public class PlayerCanvasHandler : PlayerHandler
     [SerializeField] private UIInteractActionsHandler interactActionsHandler;
     [SerializeField] private UIDialogueBoxHandler dialogueBoxHandler;
     [SerializeField] private UIItemPickHandler itemPickUpHandler;
+    [SerializeField] private UIPlayerHealthBar playerHealthBarHandler;
     
 
     public UIInteractActionsHandler InteractActionsHandler
@@ -44,6 +45,7 @@ public class PlayerCanvasHandler : PlayerHandler
         m_playerView.PlayerInput.ToggleInventory += ToggleInventory;
         inventoryUIHandler.SetupInventory(m_playerView);
         itemPickUpHandler.SetupPlayerUIHandler(m_playerView);
+        playerHealthBarHandler.SetupPlayerUIHandler(m_playerView);
     }
 
     private void ToggleInventory()

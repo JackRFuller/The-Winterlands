@@ -46,6 +46,9 @@ public class CharacterManager : MonoBehaviour
 
 	private void CheckToSpawnInCharacters()
 	{
+		if(charactersOfTheDay.Count == 0)
+			return;
+
 		for(int i = 0; i < charactersOfTheDay.Count;i++)
 		{			
 			//Get Current Time in Float
@@ -54,11 +57,11 @@ public class CharacterManager : MonoBehaviour
 
 			float currentTime = currentHours + currentMinutes;
 
-			Debug.Log(currentTime);
-
 			if(currentTime >= charactersOfTheDay[i].timeToArrive)
 			{
 				Debug.Log("Spawn In " + charactersOfTheDay[i].characterData.characterName);
+
+				charactersOfTheDay.Remove(charactersOfTheDay[i]);
 			}
 		}
 	}
@@ -73,9 +76,8 @@ public class ArrivingCharacter
 		characterData = _characterData;
 		timeToArrive = UnityEngine.Random.Range(minTime,maxTime);
 		roadType = _roadType;
-
-		Debug.Log(timeToArrive);
 	}
+	
 	public RoadType roadType;
 	public enum RoadType
 	{

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d883babc1b9dbca4fbaf4d265a00af01, type: 3}
+  m_Name: Forage_Interactable
+  m_EditorClassIdentifier: 
+  interacts:
+  - requiredInventoryItem:
+      requiredInventoryItem: {fileID: 11400000, guid: 2e3ae9696dd138243a12c38cf069a8eb,
+        type: 2}
+      quanityOfRequiredInventoryItem: 0
+    numberofRequiredInteracts: 1
+    interactionAnimationIndex: 3
+    awardedInventoryItems:
+    - awardedInventoryItem: {fileID: 11400000, guid: 9a1b2702fb2fb3648a1d7ce0f1965237,
+        type: 2}
+      spawnRates:
+      - 100
+      - 75
+      - 25
+      - 25
+      - 25
+    interactHealthCost: 0

@@ -26,6 +26,16 @@ public class PlayerHealthHandler : PlayerHandler
 		}
 	}
 
+	public void RenewPlayerHealth(float amount)
+	{
+		currentPlayerHealth += amount;
+		if(currentPlayerHealth > maxPlayerHealth)
+			currentPlayerHealth = maxPlayerHealth;
+
+		if(PlayerHealthUpdated != null)
+			PlayerHealthUpdated(currentPlayerHealth,maxPlayerHealth);
+	}
+
 	public void RemovePlayerHealth(float amount)
 	{
 		currentPlayerHealth -= amount;

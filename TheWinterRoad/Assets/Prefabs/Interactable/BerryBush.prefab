@@ -56,6 +56,7 @@ GameObject:
   - component: {fileID: 33685820519573032}
   - component: {fileID: 23759358673356664}
   - component: {fileID: 65996385677201768}
+  - component: {fileID: 114646663731233812}
   m_Layer: 0
   m_Name: BerryBush
   m_TagString: Untagged
@@ -180,8 +181,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1045569764845724}
-  m_LocalRotation: {x: -0, y: 0.9826661, z: -0, w: 0.18538454}
-  m_LocalPosition: {x: -6.5321026, y: -1.6765724, z: 11.363054}
+  m_LocalRotation: {x: -0, y: 0.8369216, z: -0, w: 0.5473229}
+  m_LocalPosition: {x: -8.24, y: -0.24342763, z: 11.363054}
   m_LocalScale: {x: 0.7617203, y: 0.76172, z: 0.7617203}
   m_Children:
   - {fileID: 4126635305894862}
@@ -193,7 +194,7 @@ Transform:
   - {fileID: 4745708146869522}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 158.63301, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 113.633, z: 0}
 --- !u!4 &4637946792458978
 Transform:
   m_ObjectHideFlags: 1
@@ -605,5 +606,26 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.75, y: 3, z: 1.75}
+  m_Size: {x: 1.12, y: 3, z: 1.29}
   m_Center: {x: 0, y: 1.5, z: 0}
+--- !u!114 &114646663731233812
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1045569764845724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 095c546139ef76740b9d0f1ca55a5356, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactableData: {fileID: 11400000, guid: ae5b7f3e23bfb33408349396f698eea1, type: 2}
+  renewalRateInDays: 1
+  berries:
+  - {fileID: 1039806664789930}
+  - {fileID: 1551323975493672}
+  - {fileID: 1043026748953986}
+  - {fileID: 1267703757644210}
+  - {fileID: 1175699063197692}
+  - {fileID: 1497444062030536}
+  - {fileID: 1460288108840054}

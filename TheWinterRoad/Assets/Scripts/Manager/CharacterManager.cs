@@ -7,10 +7,12 @@ public class CharacterManager : MonoBehaviour
 {
 	private TimeManager timeManager;
 	[SerializeField] private CharacterData[] characters;
-
 	private List<ArrivingCharacter> charactersOfTheDay;
 
-	private void Start() {
+	[SerializeField] private Transform[] arrivalSpawnPoints; 
+
+	private void Start()
+	{
 		
 		timeManager = GameManager.Instance.TimeManager;		
 		timeManager.NewDay += SetupListOfCharactersForTheDay;
@@ -60,6 +62,11 @@ public class CharacterManager : MonoBehaviour
 			if(currentTime >= charactersOfTheDay[i].timeToArrive)
 			{
 				Debug.Log("Spawn In " + charactersOfTheDay[i].characterData.characterName);
+				
+				Vector3 spawnPosition = arrivalSpawnPoints[UnityEngine.Random.Range(0,arrivalSpawnPoints.Length)].position;
+
+				GameObject character = Instantiate(charactersOfTheDay[i].characterData.characterPrefab,spawnPosition,Quaternion.identity);
+
 
 				charactersOfTheDay.Remove(charactersOfTheDay[i]);
 			}

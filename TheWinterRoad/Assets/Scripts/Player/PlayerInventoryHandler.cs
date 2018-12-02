@@ -71,5 +71,15 @@ public class PlayerInventoryHandler : PlayerHandler
         if (InventoryUpdated != null)
             InventoryUpdated(inventory);
     }
+
+    public void EatItem(int itemIndex)
+    {
+        m_playerView.PlayerHealthHandler.RenewPlayerHealth(inventory[itemIndex].healthRenewalAmount);
+        RemoveItemFromInventory(inventory[itemIndex]);
+
+        if (InventoryUpdated != null)
+            InventoryUpdated(inventory);
+        
+    }
 	
 }

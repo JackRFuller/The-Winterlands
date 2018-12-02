@@ -32,6 +32,8 @@ public class UIInventoryHandler : Entity
     private Image itemIconImage;
     [SerializeField]
     private Button itemDropButton;
+    [SerializeField]
+    private GameObject itemEatButton;
 
     [Header("Item Button Components")]
     [SerializeField]
@@ -131,14 +133,10 @@ public class UIInventoryHandler : Entity
                 itemDescriptionText.text = inventory[itemIndex].itemDescription;
                 itemIconImage.sprite = inventory[itemIndex].itemIcon;
 
-                if (inventory[itemIndex].isDropable)
-                {
-                    itemDropButton.enabled = true;
-                }
-                else
-                {
-                    itemDropButton.enabled = false;
-                }
+                itemDropButton.enabled = inventory[itemIndex].isDropable ? true : false;              
+
+                itemEatButton.SetActive(inventory[itemIndex].isEdible ? true : false);
+                
 
                 itemDescriptionObject.SetActive(true);
             }
@@ -153,6 +151,12 @@ public class UIInventoryHandler : Entity
     public void DropInventoryItem()
     {
         playerView.PlayerInventory.DropItem(currentSelectedItemIndex);
+        itemDescriptionObject.SetActive(false);
+    }
+    
+    public void EatInventoryItem()
+    {
+        playerView.PlayerInventory.EatItem(currentSelectedItemIndex);
         itemDescriptionObject.SetActive(false);
     }
 

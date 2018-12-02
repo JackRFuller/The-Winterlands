@@ -13,7 +13,10 @@ public class InventoryItemData : ScriptableObject
     public bool hasUnlockedTool;
     public bool isDropable;
     public bool isBurnable;
+    public bool isEdible;
+    public float healthRenewalAmount;
     public float burnTime;
     public float burnIntensity;
     public float pickupTime;
+    
 }

@@ -9,6 +9,8 @@ public class TimeManager : MonoBehaviour
     private  DateTime worldTime;
     public DateTime WorldTime {get{return worldTime;}}
 
+
+    public event Action NewMinute;
     //Events
     public event Action NewDay;
     public event Action NewDayPeriod;
@@ -52,6 +54,9 @@ public class TimeManager : MonoBehaviour
             yield return new WaitForSecondsRealtime(1f);
             DateTime currentTime = worldTime.AddMinutes(1.0f);
             worldTime = currentTime;
+            
+            if(NewMinute != null)
+                NewMinute();
 
             TriggerTimeOfDayEvent();
 
@@ -59,8 +64,6 @@ public class TimeManager : MonoBehaviour
             {
                 if(NewDay != null)
                     NewDay();
-
-                Debug.Log("New Day");
             }
         }
     }

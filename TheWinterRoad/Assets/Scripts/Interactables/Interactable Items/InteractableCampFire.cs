@@ -55,12 +55,9 @@ public class InteractableCampFire : Interactable
         burningItems = new List<BurningItem>();
         fireLight.intensity = 0;
         fireParticles.Stop();
-    }
 
-    private void Update()
-    {
-        BurnItems();
-    }
+        GameManager.Instance.TimeManager.NewMinute += BurnItems;
+    }   
 
     public override void InteractOne()
     {
@@ -95,9 +92,19 @@ public class InteractableCampFire : Interactable
         if (burningItems.Count == 0)
             return;
 
+        float totalBurnTime = 0;
+
+        for(int i =0; i < burningItems.Count; i++)
+        {
+            totalBurnTime += burningItems[i].burningItem.burnTime;
+        }
+
         for (int burningItemIndex = 0; burningItemIndex < burningItems.Count; burningItemIndex++)
         {
-            burningItems[burningItemIndex].elapsedBurnTime += Time.deltaTime;
+            float timePercenatge = burningItems[burningItemIndex].burningItem.burnTime / totalBurnTime;     
+
+            float burnAmount = timePercenatge == 1.0f ? 1 : 1 - timePercenatge;       
+            burningItems[burningItemIndex].elapsedBurnTime += burnAmount;
 
             if(burningItems[burningItemIndex].elapsedBurnTime >= burningItems[burningItemIndex].burningItem.burnTime)
             {
